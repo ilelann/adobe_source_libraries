@@ -9,13 +9,12 @@
 
 #include <iostream>
 #include <sstream>
-#include <mutex>
 
 #include <boost/array.hpp>
 #include <boost/bind.hpp>
 
-#include <adobe/once.hpp>
 #include <adobe/string.hpp>
+#include <adobe/mutex.hpp>
 #include <adobe/name.hpp>
 #include <adobe/implementation/token.hpp>
 #include <adobe/circular_queue.hpp>
@@ -220,8 +219,8 @@ void init_once() {
 
 /**************************************************************************************************/
 
-static once_flag once_flag;
-void once_instance() { call_once(once_flag, &init_once); }
+static adobe::once_flag once_flag;
+void once_instance() { adobe::call_once(once_flag, &init_once); }
 
 /**************************************************************************************************/
 

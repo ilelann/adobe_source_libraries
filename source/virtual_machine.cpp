@@ -9,7 +9,6 @@
 
 #include <cmath>
 #include <map>
-#include <mutex>
 #include <numeric>
 #include <typeinfo>
 #include <vector>
@@ -27,6 +26,7 @@
 #include <adobe/implementation/expression_filter.hpp>
 #include <adobe/implementation/token.hpp>
 #include <adobe/localization.hpp>
+#include <adobe/mutex.hpp>
 #include <adobe/name.hpp>
 #include <adobe/once.hpp>
 #include <adobe/static_table.hpp>
@@ -130,8 +130,8 @@ void get_type_name_init_() {
 
 /*************************************************************************************************/
 
-once_flag get_type_name_flag;
-void get_type_name_init() { call_once(get_type_name_flag, &get_type_name_init_); }
+adobe::once_flag get_type_name_flag;
+void get_type_name_init() { adobe::call_once(get_type_name_flag, &get_type_name_init_); }
 
 /*************************************************************************************************/
 
@@ -467,8 +467,8 @@ void virtual_machine_init_() {
 
 /*************************************************************************************************/
 
-once_flag virtual_machine_init_flag;
-void virtual_machine_init() { call_once(virtual_machine_init_flag, &virtual_machine_init_); }
+adobe::once_flag virtual_machine_init_flag;
+void virtual_machine_init() { adobe::call_once(virtual_machine_init_flag, &virtual_machine_init_); }
 
 /*************************************************************************************************/
 

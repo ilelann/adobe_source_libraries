@@ -8,14 +8,14 @@
 
 #include <boost/version.hpp>
 
-#include <mutex>
-#include <thread>
-
 #include <adobe/implementation/zuid_sys_dep.hpp>
 #include <adobe/config.hpp>
+#include <adobe/mutex.hpp>
 #include <adobe/once.hpp>
+#include <adobe/thread.hpp>
 
 #include <cstring>
+#include <functional> 
 
 #if ADOBE_PLATFORM_WIN
 #include <windows.h>
@@ -39,6 +39,10 @@
 
 #if defined(BOOST_HAS_GETTIMEOFDAY)
 #include <sys/time.h>
+#endif
+
+#ifdef HAVE_NO_STD_MUTEX
+#include <random>
 #endif
 
 /*************************************************************************************************/
@@ -101,9 +105,9 @@ void init_zuid_sys_dep_once_() {
 
 /*************************************************************************************************/
 
-static once_flag init_zuid_sys_dep_flag;
+static adobe::once_flag init_zuid_sys_dep_flag;
 
-void init_zuid_sys_dep_once() { call_once(init_zuid_sys_dep_flag, &init_zuid_sys_dep_once_); }
+void init_zuid_sys_dep_once() { adobe::call_once(init_zuid_sys_dep_flag, &init_zuid_sys_dep_once_); }
 
 /*************************************************************************************************/
 
@@ -122,8 +126,12 @@ namespace {
 adobe::md5_t::digest_t get_generic_random_info() {
     struct randomness {
         randomness()
-            : thread_id_m(std::hash<std::thread::id>()(std::this_thread::get_id()))
-#if defined(BOOST_HAS_UNISTD_H)
+#ifdef HAVE_NO_STD_MUTEX
+			: thread_id_m{get_random_int()}
+#else
+            : thread_id_m(std::hash<adobe::thread::id::native_handle_type>()(adobe::this_thread::get_id()))
+#endif
+#if defined(BOOST_HAS_UNISTD_H) && !defined(__MINGW32__)
               ,
               pid_m(getpid()), uid_m(getuid()), gid_m(getgid())
 #endif
@@ -131,7 +139,7 @@ adobe::md5_t::digest_t get_generic_random_info() {
 #if defined(BOOST_HAS_THREADS)
             boost::xtime_get(&time_m, boost::TIME_UTC_);
 #endif
-#if defined(BOOST_HAS_UNISTD_H)
+#if defined(BOOST_HAS_UNISTD_H) && !defined(__MINGW32__)
             gethostname(hostname_m, 256);
 #endif
 #if defined(BOOST_HAS_GETTIMEOFDAY)
@@ -143,7 +151,7 @@ adobe::md5_t::digest_t get_generic_random_info() {
 #if defined(BOOST_HAS_THREADS)
         boost::xtime time_m;
 #endif
-#if defined(BOOST_HAS_UNISTD_H)
+#if defined(BOOST_HAS_UNISTD_H) && !defined(__MINGW32__)
         pid_t pid_m;
         uid_t uid_m;
         gid_t gid_m;
@@ -151,6 +159,15 @@ adobe::md5_t::digest_t get_generic_random_info() {
 #endif
 #if defined(BOOST_HAS_GETTIMEOFDAY)
         timeval timeval_m;
+#endif
+
+#if defined(HAVE_NO_STD_MUTEX)
+private:
+	static std::size_t get_random_int()
+	{
+		std::random_device rd;
+		return std::uniform_int_distribution<std::size_t>{}(rd);
+	}
 #endif
     };
 

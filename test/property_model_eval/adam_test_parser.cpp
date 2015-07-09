@@ -31,7 +31,7 @@ namespace {
 void init_keyword_table();
 }
 
-std::once_flag adobe_adam_test_parser;
+adobe::once_flag adobe_adam_test_parser;
 
 /*************************************************************************************************/
 
@@ -71,7 +71,7 @@ void init_keyword_table() {
     keyword_table_g = &keyword_table_s;
 }
 
-void once_instance() { std::call_once(adobe_adam_test_parser, init_keyword_table); }
+void once_instance() { adobe::call_once(adobe_adam_test_parser, init_keyword_table); }
 
 /*************************************************************************************************/
 

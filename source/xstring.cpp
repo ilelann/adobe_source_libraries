@@ -120,8 +120,8 @@ void init_xstr_once() {
 
 
 void xstr_once() {
-    static once_flag flag;
-    call_once(flag, &init_xstr_once);
+    static adobe::once_flag flag;
+    adobe::call_once(flag, &init_xstr_once);
 }
 
 /**************************************************************************************************/

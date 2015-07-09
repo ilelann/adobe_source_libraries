@@ -9,6 +9,7 @@
 #define ADOBE_ONCE_HPP
 
 #include <adobe/config.hpp>
+#include <adobe/mutex.hpp>
 
 #if defined(BOOST_HAS_THREADS)
 #include <boost/thread.hpp>

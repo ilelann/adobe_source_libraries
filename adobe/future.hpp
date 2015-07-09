@@ -9,6 +9,9 @@
 #define ADOBE_FUTURE_HPP
 
 #include <adobe/cassert.hpp> 
+#include <adobe/chrono.hpp>
+#include <adobe/mutex.hpp>
+
 
 #include <list>
 #include <future>
@@ -53,7 +56,7 @@ struct any_packaged_task_ {
 };
 
 void async_(any_packaged_task_&&);
-void async_(const std::chrono::steady_clock::time_point&, any_packaged_task_&&);
+void async_(const chrono::steady_clock::time_point&, any_packaged_task_&&);
 
 } // namespace details
 
@@ -78,7 +81,7 @@ auto async(F&& f, Args&&... args) -> std::future<typename std::result_of<F(Args.
 /**************************************************************************************************/
 
 template <class Duration, class F, class... Args>
-auto async(const std::chrono::time_point<std::chrono::steady_clock, Duration>& when,
+auto async(const chrono::time_point<chrono::steady_clock, Duration>& when,
         F&& f, Args&&... args)
     -> std::future<typename std::result_of<F(Args...)>::type>
 {
@@ -103,10 +106,10 @@ template <typename T>
 class concurrent_queue
 {
     using queue_t = std::list<T>;
-    using lock_t = std::lock_guard<std::mutex>;
+    using lock_t = lock_guard<mutex>;
 
     queue_t q_;
-    std::mutex mutex_;
+    mutex mutex_;
 
   public:
     using value_type = T;

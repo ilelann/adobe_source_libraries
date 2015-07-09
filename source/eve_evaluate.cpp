@@ -7,13 +7,12 @@
 
 #include <adobe/eve_evaluate.hpp>
 
-#include <mutex>
-
 #include <boost/bind.hpp>
 
 #include <adobe/algorithm/sort.hpp>
 #include <adobe/array.hpp>
 #include <adobe/dictionary.hpp>
+#include <adobe/mutex.hpp>
 #include <adobe/name.hpp>
 #include <adobe/static_table.hpp>
 #include <adobe/string.hpp>
@@ -120,8 +119,8 @@ void init_once_() {
 
 /**************************************************************************************************/
 
-once_flag flag;
-void init_once() { call_once(flag, &init_once_); }
+adobe::once_flag flag;
+void init_once() { adobe::call_once(flag, &init_once_); }
 
 /**************************************************************************************************/
 

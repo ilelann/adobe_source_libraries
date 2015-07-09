@@ -15,7 +15,6 @@
 #include <algorithm>
 #include <cassert>
 #include <cstdlib>
-#include <mutex>
 
 #include <boost/noncopyable.hpp>
 #include <boost/operators.hpp>
@@ -23,7 +22,7 @@
 
 #include <adobe/counter.hpp>
 #include <adobe/memory.hpp>
-#include <adobe/once.hpp>
+#include <adobe/mutex.hpp>
 #include <adobe/typeinfo.hpp>
 
 /**************************************************************************************************/
@@ -89,7 +88,7 @@ public:
         default constructor. The default instance will be released at exit.
     */
     copy_on_write() {
-        std::call_once(flag_s, init_default);
+        call_once(flag_s, init_default);
         object_m = default_s;
         object_m->header_m.get().count_m.increment();
     }
@@ -321,7 +320,7 @@ private:
 
     implementation_t* object_m;
 
-    static std::once_flag flag_s;
+    static once_flag flag_s;
     static implementation_t* default_s;
 
     static void release_default();
@@ -336,7 +335,7 @@ private:
 /**************************************************************************************************/
 
 template <typename T, typename A>
-std::once_flag copy_on_write<T, A>::flag_s;
+once_flag copy_on_write<T, A>::flag_s;
 
 template <typename T, typename A>
 typename copy_on_write<T, A>::implementation_t* copy_on_write<T, A>::default_s;

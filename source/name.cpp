@@ -8,11 +8,11 @@
 
 // identity
 #include <adobe/name.hpp>
+#include <adobe/mutex.hpp>
 
 // stdc++
 #include <iostream>
 #include <unordered_map>
-#include <mutex>
 
 // asl
 #include <adobe/implementation/string_pool.hpp>
@@ -62,9 +62,9 @@ const char* name_t::map_string(const char* str) {
 
 const char* name_t::map_string(const char* str, std::size_t hash) {
     typedef std::unordered_map<std::size_t, const char*> map_t;
-    typedef std::lock_guard<std::mutex> lock_t;
+    typedef lock_guard<mutex> lock_t;
 
-    static std::mutex sync_s;
+    static mutex sync_s;
 
     lock_t lock(sync_s);
 

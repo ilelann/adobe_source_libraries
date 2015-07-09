@@ -20,11 +20,12 @@
 
 #else
 
+#include <adobe/mutex.hpp>
+
 #include <functional>
 #include <future>
 #include <list>
 #include <memory>
-#include <mutex>
 
 #endif
 
@@ -88,7 +89,7 @@ struct cancel_state {
     void cancel() {
         list_type list;
         {
-            std::lock_guard<std::mutex> lock(guard_);
+            lock_guard<mutex> lock(guard_);
             if (!canceled_) {
                 canceled_ = true;
                 swap(list, callback_list_);
@@ -109,7 +110,7 @@ struct cancel_state {
         cancellation_token_registration result = nullptr;
         bool canceled;
         {
-            std::lock_guard<std::mutex> lock(guard_);
+            lock_guard<mutex> lock(guard_);
             canceled = canceled_;
             if (!canceled) {
                 /*
@@ -133,7 +134,7 @@ struct cancel_state {
         */
         list_type list;
         {
-            std::lock_guard<std::mutex> lock(guard_);
+            lock_guard<mutex> lock(guard_);
 
             auto i = find_if(begin(callback_list_), end(callback_list_),
                              [token](const std::function<void()>& x) { return &x == token; });
@@ -144,7 +145,7 @@ struct cancel_state {
 
     bool is_canceled() const { return canceled_; }
 
-    std::mutex guard_;
+    mutex guard_;
     volatile bool canceled_; // Write once, read many
     list_type callback_list_;
 };

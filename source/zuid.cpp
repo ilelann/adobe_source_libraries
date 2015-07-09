@@ -8,6 +8,7 @@
 
 #include <adobe/config.hpp>
 #include <adobe/zuid.hpp>
+#include <adobe/mutex.hpp>
 #include <adobe/once.hpp>
 #include <adobe/implementation/zuid_uuid.hpp>
 #include <adobe/implementation/zuid_sys_dep.hpp>
@@ -18,7 +19,6 @@
 #include <string>
 #include <cstdio>
 #include <memory>
-#include <mutex>
 #include <vector>
 
 /*************************************************************************************************/
@@ -107,9 +107,9 @@ void init_zuid_once_() {
 
 /*************************************************************************************************/
 
-once_flag init_zuid_flag;
+adobe::once_flag init_zuid_flag;
 
-void init_zuid_once() { call_once(init_zuid_flag, &init_zuid_once_); }
+void init_zuid_once() { adobe::call_once(init_zuid_flag, &init_zuid_once_); }
 
 /*************************************************************************************************/
 

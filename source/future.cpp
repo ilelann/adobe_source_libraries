@@ -7,15 +7,27 @@
 
 #include <adobe/future.hpp>
 
-#include <condition_variable>
 #include <list>
-#include <mutex>
 #include <queue>
 #include <vector>
 
-using namespace std;
-using namespace adobe::details;
-using namespace std::chrono;
+#include <adobe/condition_variable.hpp>
+#include <adobe/mutex.hpp>
+#include <adobe/thread.hpp>
+
+
+using std::list;
+using std::pair;
+using std::vector;
+using std::make_shared;
+using std::move;
+
+using adobe::chrono::steady_clock;
+using adobe::condition_variable;
+using adobe::mutex;
+using adobe::unique_lock;
+using adobe::thread;
+using adobe::details::any_packaged_task_;
 
 /**************************************************************************************************/
 
@@ -25,7 +37,7 @@ using list_t = list<any_packaged_task_>;
 
 struct thread_pool {
 
-    using lock_t = unique_lock<mutex>;
+    using lock_t = adobe::unique_lock<mutex>;
     using queue_t = list<any_packaged_task_>;
 
     thread_pool()
@@ -73,9 +85,9 @@ struct thread_pool {
     }
 
     queue_t             q_;
-    condition_variable  condition_;
-    mutex               mutex_;
-    vector<thread>      pool_;
+    adobe::condition_variable  condition_;
+    adobe::mutex               mutex_;
+    vector<adobe::thread>      pool_;
 };
 
 struct timed_queue {
