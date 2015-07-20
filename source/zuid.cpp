@@ -131,7 +131,7 @@ void format_uuid(zuid_char_buffer_t& buffer, const adobe::uuid_t& uuid) {
 /*************************************************************************************************/
 
 const adobe::uuid_t& empty_uuid() {
-    static adobe::uuid_t uuid_s = {0};
+    static adobe::uuid_t uuid_s = {};
 
     return uuid_s;
 }

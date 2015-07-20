@@ -25,7 +25,6 @@
 #include <adobe/implementation/parser_shared.hpp>
 
 #include <boost/function.hpp>
-#include <boost/noncopyable.hpp>
 #include <boost/operators.hpp>
 #include <boost/bind.hpp>
 #include <boost/array.hpp>
@@ -418,7 +417,7 @@ typedef boost::function<implementation_xml_element_proc_t> xml_element_proc_t;
 
 // NOTE (fbrereto) : Class declaration for the documentation is in xml_parser.dox
 template <typename O> // O models OutputIterator
-class xml_parser_t : public boost::noncopyable {
+class xml_parser_t {
 public:
     typedef xml_element_proc_t callback_proc_t;
     typedef boost::function<bool(const token_range_t&)> preorder_predicate_t;

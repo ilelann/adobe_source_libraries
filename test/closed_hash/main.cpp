@@ -67,20 +67,6 @@ const void* remote_address(const closed_hash_map<Key, Value>& x) {
 
 } // namespace adobe
 
-BOOST_AUTO_TEST_CASE(vector_allocator_rtti) {
-    using namespace adobe;
-    typedef std::vector<int, capture_allocator<int>> vector_t;
-    // vector_t v;
-    // const std::type_info& t1 = typeid(vector_t);
-
-    // BOOST_CHECK(!t1.requires_std_rtti());
-
-    typedef std::vector<int, std::allocator<int>> vector_stda_t;
-    // const std::type_info& t2 = typeid(vector_stda_t);
-    // BOOST_CHECK(t2.requires_std_rtti());
-}
-
-
 BOOST_AUTO_TEST_CASE(closed_hash_allocator_rtti) {
     using namespace adobe;
 

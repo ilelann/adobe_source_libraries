@@ -491,16 +491,16 @@ virtual_machine_t::implementation_t::implementation_t() { virtual_machine_init()
 /*************************************************************************************************/
 
 void virtual_machine_t::implementation_t::evaluate(const array_t& expression) {
-    for (expression_t::const_iterator iter(expression.begin()); iter != expression.end(); ++iter) {
+    for (const auto & op : expression) {
         adobe::name_t op_name;
 
-        iter->cast(op_name);
+        op.cast(op_name);
 
         if (op_name && op_name.c_str()[0] == '.') {
             if (!operator_override(op_name))
                 ((*this).*(find_operator(op_name)))();
         } else {
-            value_stack_m.push_back(*iter);
+            value_stack_m.push_back(op);
         }
     }
 }
@@ -708,20 +708,16 @@ T accumulate(const InputRange& range, T init, BinaryOperation binary_op)
 /*************************************************************************************************/
 
 void virtual_machine_t::implementation_t::array_operator() {
-    stack_type::difference_type count =
-        static_cast<stack_type::difference_type>(back().cast<double>());
+    auto count = static_cast<stack_type::difference_type>(back().cast<double>());
 
     pop_back();
 
-    adobe::array_t result;
-
-    for (stack_type::iterator first(value_stack_m.end() - count), last(value_stack_m.end());
-         first != last; ++first) {
-        result.push_back(std::move(*first));
-    }
+    auto result = array_t(
+            std::make_move_iterator(value_stack_m.end() - count),
+            std::make_move_iterator(value_stack_m.end()));
 
     value_stack_m.resize(value_stack_m.size() - count);
-    value_stack_m.push_back(any_regular_t(std::move(result)));
+    value_stack_m.emplace_back(std::move(result));
 }
 
 /*************************************************************************************************/
@@ -879,13 +875,6 @@ void virtual_machine_t::set_named_index_lookup(const named_index_lookup_t& funct
 
 void virtual_machine_t::set_numeric_index_lookup(const numeric_index_lookup_t& function) {
     object_m->numeric_index_lookup_m = function;
-}
-
-/*************************************************************************************************/
-
-void virtual_machine_t::override_operator(name_t operator_name,
-                                          const binary_op_override_t& override) {
-    object_m->binary_op_override_map_m[operator_name] = override;
 }
 
 /*************************************************************************************************/

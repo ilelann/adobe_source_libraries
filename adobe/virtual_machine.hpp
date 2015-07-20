@@ -77,8 +77,6 @@ public:
     void set_named_index_lookup(const named_index_lookup_t&);
     void set_numeric_index_lookup(const numeric_index_lookup_t&);
 
-    void override_operator(name_t, const binary_op_override_t&);
-
     class implementation_t;
 
 private:

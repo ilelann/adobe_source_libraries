@@ -816,7 +816,6 @@ template <typename Selection, typename OutputIterator>
 OutputIterator selection_to_index_set(const Selection& selection,
                                       typename boost::range_size<Selection>::type max_index,
                                       OutputIterator output) {
-    typedef typename boost::range_size<Selection>::type size_type;
     typedef typename boost::range_const_iterator<Selection>::type selection_const_iterator;
 
     bool selected(start_selected(selection));

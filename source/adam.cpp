@@ -232,8 +232,9 @@ private:
         void clear_resolved() { resolved_m = false; }
     };
 
+    typedef boost::function<any_regular_t()> calculator_t;
+
     struct cell_t {
-        typedef boost::function<any_regular_t()> calculator_t;
 
         typedef empty_copy<boost::signals2::signal<void(bool)>> monitor_invariant_list_t;
         typedef empty_copy<boost::signals2::signal<void(const any_regular_t&)>>
@@ -287,8 +288,8 @@ private:
         cell_t* interface_input_m;
 
         priority_t priority() const {
-            assert(specifier_m == access_interface_input ||
-                   specifier_m == access_interface_output &&
+            assert((specifier_m == access_interface_input ||
+                   specifier_m == access_interface_output) &&
                        "should not read priority of this cell type");
             return interface_input_m ? interface_input_m->priority_m : priority_m;
         }
@@ -324,15 +325,13 @@ private:
         // friend void swap(cell_t& x, cell_t&y) { std::swap(x, y); }
     };
 
+    calculator_t compile(const line_position_t& position, const array_t& expression);
+    calculator_t compile_indexed(const line_position_t& position, const array_t& expression, std::size_t index);
+
     friend struct cell_t;
     friend struct compare_contributing_t;
 
     any_regular_t calculate_expression(const line_position_t& position, const array_t& expression);
-
-    any_regular_t calculate_indexed(const line_position_t& position, const array_t& expression,
-                                    std::size_t index) {
-        return calculate_expression(position, expression).cast<array_t>()[index];
-    }
 
     dictionary_t contributing_set(const dictionary_t&, const cell_bits_t&) const;
 
@@ -637,7 +636,7 @@ void sheet_t::implementation_t::set(name_t n, const any_regular_t& v) {
     updated_m = false;
 #endif
 
-    index_t::iterator iter(input_index_m.find(n));
+    auto iter = input_index_m.find(n);
     if (iter == input_index_m.end()) {
         throw std::logic_error(make_string("input cell ", n.c_str(), " does not exist."));
     }
@@ -719,9 +718,7 @@ void sheet_t::implementation_t::add_input(name_t name, const line_position_t& po
 void sheet_t::implementation_t::add_output(name_t name, const line_position_t& position,
                                            const array_t& expression) {
     // REVISIT (sparent) : Non-transactional on failure.
-    cell_set_m.push_back(cell_t(access_output, name,
-                                boost::bind(&implementation_t::calculate_expression,
-                                            boost::ref(*this), position, expression),
+    cell_set_m.push_back(cell_t(access_output, name, compile(position, expression),
                                 cell_set_m.size(), nullptr));
 
     output_index_m.insert(cell_set_m.back());
@@ -745,14 +742,7 @@ void sheet_t::implementation_t::add_interface(name_t name, bool linked,
                                               const array_t& expression) {
     scope_value_t<bool> scope(initialize_mode_m, true);
 
-    if (initializer_expression.size()) {
-        cell_set_m.push_back(
-            cell_t(name, linked, boost::bind(&implementation_t::calculate_expression,
-                                             boost::ref(*this), position1, initializer_expression),
-                   cell_set_m.size()));
-    } else {
-        cell_set_m.push_back(cell_t(name, linked, cell_t::calculator_t(), cell_set_m.size()));
-    }
+    cell_set_m.emplace_back(name, linked, compile(position1, initializer_expression) ,cell_set_m.size());
 
     // REVISIT (sparent) : Non-transactional on failure.
     input_index_m.insert(cell_set_m.back());
@@ -760,17 +750,13 @@ void sheet_t::implementation_t::add_interface(name_t name, bool linked,
     if (initializer_expression.size())
         initialize_one(cell_set_m.back());
 
-    if (expression.size()) {
-        // REVISIT (sparent) : Non-transactional on failure.
-        cell_set_m.push_back(cell_t(access_interface_output, name,
-                                    boost::bind(&implementation_t::calculate_expression,
-                                                boost::ref(*this), position2, expression),
-                                    cell_set_m.size(), &cell_set_m.back()));
-    } else {
-        cell_set_m.push_back(cell_t(access_interface_output, name,
-                                    boost::bind(&implementation_t::get, boost::ref(*this), name),
-                                    cell_set_m.size(), &cell_set_m.back()));
-    }
+    auto compiled_expression = expression.empty() ?
+                [=]{return get(name);} : compile(position2, expression);
+
+    // REVISIT (sparent) : Non-transactional on failure.
+    cell_set_m.emplace_back(access_interface_output, name, compiled_expression,
+                                    cell_set_m.size(), &cell_set_m.back());
+
     output_index_m.insert(cell_set_m.back());
 
     if (!name_index_m.insert(cell_set_m.back()).second) {
@@ -782,7 +768,7 @@ void sheet_t::implementation_t::add_interface(name_t name, bool linked,
 /**************************************************************************************************/
 
 void sheet_t::implementation_t::add_interface(name_t name, any_regular_t initial) {
-    cell_set_m.push_back(cell_t(name, true, cell_t::calculator_t(), cell_set_m.size()));
+    cell_set_m.emplace_back(name, true, calculator_t(), cell_set_m.size());
 
     cell_t& cell = cell_set_m.back();
 
@@ -791,9 +777,8 @@ void sheet_t::implementation_t::add_interface(name_t name, any_regular_t initial
     cell.state_m = std::move(initial);
     cell.priority_m = ++priority_high_m;
 
-    cell_set_m.push_back(cell_t(access_interface_output, name,
-                                boost::bind(&implementation_t::get, boost::ref(*this), name),
-                                cell_set_m.size(), &cell));
+    cell_set_m.emplace_back(access_interface_output, name, [=]{return get(name);},
+                                cell_set_m.size(), &cell);
 
     output_index_m.insert(cell_set_m.back());
 
@@ -808,8 +793,8 @@ void sheet_t::implementation_t::add_constant(name_t name, const line_position_t&
                                              const array_t& initializer) {
     scope_value_t<bool> scope(initialize_mode_m, true);
 
-    cell_set_m.push_back(cell_t(access_constant, name, calculate_expression(position, initializer),
-                                cell_set_m.size()));
+    cell_set_m.emplace_back(access_constant, name, calculate_expression(position, initializer),
+                                cell_set_m.size());
     // REVISIT (sparent) : Non-transactional on failure.
 
     if (!name_index_m.insert(cell_set_m.back()).second) {
@@ -832,10 +817,8 @@ void sheet_t::implementation_t::add_constant(name_t name, any_regular_t value) {
 
 void sheet_t::implementation_t::add_logic(name_t logic, const line_position_t& position,
                                           const array_t& expression) {
-    cell_set_m.push_back(cell_t(access_logic, logic,
-                                boost::bind(&implementation_t::calculate_expression,
-                                            boost::ref(*this), position, expression),
-                                cell_set_m.size(), nullptr));
+    cell_set_m.emplace_back(access_logic, logic, compile(position, expression),
+                                cell_set_m.size(), nullptr);
 
     if (!name_index_m.insert(cell_set_m.back()).second) {
         throw stream_error_t(make_string("cell named '", logic.c_str(), "'already exists."),
@@ -848,10 +831,8 @@ void sheet_t::implementation_t::add_logic(name_t logic, const line_position_t& p
 void sheet_t::implementation_t::add_invariant(name_t name, const line_position_t& position,
                                               const array_t& expression) {
     // REVISIT (sparent) : Non-transactional on failure.
-    cell_set_m.push_back(cell_t(access_invariant, name,
-                                boost::bind(&implementation_t::calculate_expression,
-                                            boost::ref(*this), position, expression),
-                                cell_set_m.size(), nullptr));
+    cell_set_m.emplace_back(access_invariant, name, compile(position, expression),
+                                cell_set_m.size(), nullptr);
 
     output_index_m.insert(cell_set_m.back());
 
@@ -905,6 +886,28 @@ any_regular_t sheet_t::implementation_t::calculate_expression(const line_positio
     machine_m.pop_back();
 
     return result;
+}
+
+/**************************************************************************************************/
+
+sheet_t::implementation_t::calculator_t sheet_t::implementation_t::compile(
+        const line_position_t& position,
+        const array_t& expression)
+{
+    return expression.empty() ?
+                calculator_t{} :
+                [=] { return calculate_expression(position, expression);};
+}
+
+/**************************************************************************************************/
+
+sheet_t::implementation_t::calculator_t sheet_t::implementation_t::compile_indexed(
+        const line_position_t& position,
+        const array_t& expression,
+        std::size_t index)
+{
+    auto array_calculator = compile(position, expression);
+    return [=] { return array_calculator().cast<array_t>()[index];};
 }
 
 /**************************************************************************************************/
@@ -1121,13 +1124,9 @@ void sheet_t::implementation_t::flow(cell_bits_t& priority_accessed) {
                 if (cell.term_m) throw logic_error("over constrained.");
 
                 if (count == 1) {
-                    cell.term_m =
-                        boost::bind(&implementation_t::calculate_expression, boost::ref(*this),
-                                    term->position_m, term->expression_m);
+                    cell.term_m = compile(term->position_m, term->expression_m);
                 } else {
-                    cell.term_m =
-                        boost::bind(&implementation_t::calculate_indexed, boost::ref(*this),
-                                    term->position_m, term->expression_m, n);
+                    cell.term_m = compile_indexed(term->position_m, term->expression_m, n);
                 }
 
                 --cell.relation_count_m;
@@ -1198,20 +1197,16 @@ void sheet_t::implementation_t::update() {
 
     accumulate_contributing_m.reset();
 
-    for (relation_cell_set_t::iterator current_cell(relation_cell_set_m.begin()),
-         last_cell(relation_cell_set_m.end());
-         current_cell != last_cell; ++current_cell) {
-        if (current_cell->conditional_m.empty())
+    for (auto & cell : relation_cell_set_m) {
+        if (cell.conditional_m.empty())
             continue;
 
-        if (!calculate_expression(current_cell->position_m, current_cell->conditional_m)
+        if (!calculate_expression(cell.position_m, cell.conditional_m)
                  .cast<bool>()) {
-            for (vector<cell_t*>::iterator f = current_cell->edges_m.begin(),
-                                           l = current_cell->edges_m.end();
-                 f != l; ++f) {
-                --(*f)->relation_count_m;
+            for (auto & f : cell.edges_m) {
+                --(f->relation_count_m);
             }
-            current_cell->resolved_m = true;
+            cell.resolved_m = true;
         }
     }
 
@@ -1222,23 +1217,17 @@ void sheet_t::implementation_t::update() {
     flow(priority_accessed);
 
 #ifndef NDEBUG
-    for (relation_cell_set_t::iterator first(relation_cell_set_m.begin()),
-         last(relation_cell_set_m.end());
-         first != last; ++first) {
-        if (first->resolved_m)
+    for (const auto & cell : relation_cell_set_m) {
+        if (cell.resolved_m)
             continue;
 
-
-        std::clog << "(warning) relation unnecessary and ignored\n" << first->position_m;
+        std::clog << "(warning) relation unnecessary and ignored\n" << cell.position_m;
     }
 #endif
 
     // calculate the output/interface_output/invariant cells and apply.
 
-    for (index_t::const_iterator iter(output_index_m.begin()), last(output_index_m.end());
-         iter != last; ++iter) {
-        cell_t& cell(*iter);
-
+    for (auto & cell : output_index_m) {
         // REVISIT (sparent) : This is a copy/paste of get();
 
         if (!cell.evaluated_m) {
@@ -1272,10 +1261,8 @@ void sheet_t::implementation_t::update() {
 
     cell_bits_t poison;
 
-    for (index_vector_t::const_iterator iter(invariant_index_m.begin()),
-         last(invariant_index_m.end());
-         iter != last; ++iter) {
-        cell_t& cell(**iter);
+    for (const auto cell_p : invariant_index_m) {
+        cell_t& cell(*cell_p);
 
         if (!cell.state_m.cast<bool>())
             poison |= cell.contributing_m;
@@ -1304,9 +1291,7 @@ void sheet_t::implementation_t::update() {
 
     // REVIST (sparent) : input monitor should recieve priority_accessed and poison bits.
 
-    for (index_t::const_iterator iter(output_index_m.begin()), last(output_index_m.end());
-         iter != last; ++iter) {
-        cell_t& cell(*iter);
+    for (auto & cell : output_index_m) {
         bool invariant((poison & cell.contributing_m).none());
 
         if (invariant != cell.invariant_m)

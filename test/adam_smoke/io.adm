@@ -1,0 +1,8 @@
+sheet io
+{
+interface:
+    value : 1.0;
+
+output:
+    result      <== [value];
+}

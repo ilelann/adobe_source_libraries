@@ -8,6 +8,12 @@ project(adobe_source_libraries CXX)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD 11)
 
+add_definitions ("-Wall")
+add_definitions ("-Wextra")
+add_definitions ("-Werror")
+
+MESSAGE("CMAKE BUILD TYPE: " ${CMAKE_BUILD_TYPE})
+
 link_directories(${CMAKE_INSTALL_PREFIX}/lib)
 
 ExternalProject_Add(double-conversion_prj

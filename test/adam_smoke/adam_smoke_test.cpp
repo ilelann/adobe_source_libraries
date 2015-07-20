@@ -184,6 +184,7 @@ bool test_sheet(const bfs::path& root) {
         std::cout << '\t' << adobe::begin_asl_cel << input_value << adobe::end_asl_cel;
         std::cout << "Calculated Value:\n";
         std::cout << '\t' << adobe::begin_asl_cel << sheet_value << adobe::end_asl_cel;
+        std::cout << std::endl;
 
         success = false;
     }
@@ -199,6 +200,11 @@ bool test_sheet(const bfs::path& root) {
 
 int main(int argc, char* argv[]) {
     int result(0);
+
+    if (argc > 2 && !std::strcmp(argv[1], "ut_mode"))
+    {
+        return !test_sheet(bfs::path(argv[2]));
+    }
 
     try {
         if (argc > 1) {
