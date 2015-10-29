@@ -10,9 +10,6 @@
 
 #include <adobe/config.hpp>
 
-#include <boost/range/begin.hpp>
-#include <boost/range/end.hpp>
-
 #include <algorithm>
 #include <functional>
 
@@ -37,7 +34,7 @@ namespace adobe {
 */
 template <class BidirectionalRange>
 inline bool next_permutation(BidirectionalRange& range) {
-    return std::next_permutation(boost::begin(range), boost::end(range));
+    return std::next_permutation(std::begin(range), std::end(range));
 }
 
 /*!
@@ -58,7 +55,7 @@ inline bool next_permutation(BidirectionalIterator first, BidirectionalIterator 
 */
 template <class BidirectionalRange, class Compare>
 inline bool next_permutation(BidirectionalRange& range, Compare comp) {
-    return adobe::next_permutation(boost::begin(range), boost::end(range), comp);
+    return adobe::next_permutation(std::begin(range), std::end(range), comp);
 }
 
 /*!
@@ -68,7 +65,7 @@ inline bool next_permutation(BidirectionalRange& range, Compare comp) {
 */
 template <class BidirectionalRange>
 inline bool prev_permutation(BidirectionalRange& range) {
-    return std::prev_permutation(boost::begin(range), boost::end(range));
+    return std::prev_permutation(std::begin(range), std::end(range));
 }
 
 /*!
@@ -89,7 +86,7 @@ inline bool prev_permutation(BidirectionalIterator first, BidirectionalIterator 
 */
 template <class BidirectionalRange, class Compare>
 inline bool prev_permutation(BidirectionalRange& range, Compare comp) {
-    return adobe::prev_permutation(boost::begin(range), boost::end(range), comp);
+    return adobe::prev_permutation(std::begin(range), std::end(range), comp);
 }
 
 /*************************************************************************************************/

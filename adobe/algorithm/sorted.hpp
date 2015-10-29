@@ -12,9 +12,6 @@
 #include <functional>
 #include <iterator>
 
-#include <boost/range/begin.hpp>
-#include <boost/range/end.hpp>
-
 #include <adobe/functional/operator.hpp>
 
 /*************************************************************************************************/
@@ -96,7 +93,7 @@ template <typename I, // I models ForwardRange
           typename P>
 // P models UnaryFunction(value_type(I)) -> T
 inline bool is_sorted(const I& r, C c, P p) {
-    return is_sorted(boost::begin(r), boost::end(r), c, p);
+    return is_sorted(std::begin(r), std::end(r), c, p);
 }
 
 /*************************************************************************************************/
@@ -108,7 +105,7 @@ template <typename I, // I models ForwardRange
           typename C>
 // C models StrictWeakOrdering(T, T)
 inline bool is_sorted(const I& r, C c) {
-    return is_sorted(boost::begin(r), boost::end(r), c,
+    return is_sorted(std::begin(r), std::end(r), c,
                      identity<typename std::iterator_traits<I>::value_type>());
 }
 
@@ -119,7 +116,7 @@ inline bool is_sorted(const I& r, C c) {
 */
 template <typename I> // I models ForwardRange
 inline bool is_sorted(const I& r) {
-    return is_sorted(boost::begin(r), boost::end(r), less());
+    return is_sorted(std::begin(r), std::end(r), less());
 }
 
 /*************************************************************************************************/

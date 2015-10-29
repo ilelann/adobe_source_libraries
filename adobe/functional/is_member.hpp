@@ -12,9 +12,6 @@
 #include <adobe/config.hpp>
 
 #include <boost/iterator/iterator_traits.hpp>
-#include <boost/range/begin.hpp>
-#include <boost/range/const_iterator.hpp>
-#include <boost/range/end.hpp>
 
 #include <adobe/algorithm/binary_search.hpp>
 #include <adobe/functional/operator.hpp>
@@ -58,14 +55,14 @@ is_member<I, O> make_is_member(I f, I l, O o) {
 }
 
 template <typename I> // I models ForwardRange
-is_member<typename boost::range_const_iterator<I>::type, less> make_is_member(const I& r) {
+is_member<typename I::const_iterator, less> make_is_member(const I& r) {
     return make_is_member(begin(r), end(r));
 }
 
 template <typename I, // I models ForwardRange
           typename O>
 // O modles StrictWeakOrdering
-is_member<typename boost::range_const_iterator<I>::type, O> make_is_member(const I& r, O o) {
+is_member<typename I::const_iterator, O> make_is_member(const I& r, O o) {
     return make_is_member(begin(r), end(r), o);
 }
 

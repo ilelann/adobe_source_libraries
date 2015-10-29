@@ -10,9 +10,6 @@
 
 #include <adobe/config.hpp>
 
-#include <boost/range/begin.hpp>
-#include <boost/range/end.hpp>
-
 #include <algorithm>
 #include <functional>
 
@@ -43,7 +40,7 @@ inline bool equal(InputIterator1 first1, InputIterator1 last1, InputIterator2 fi
 */
 template <class InputRange1, class InputIterator2>
 inline bool equal(const InputRange1& range1, InputIterator2 first2) {
-    return std::equal(boost::begin(range1), boost::end(range1), first2);
+    return std::equal(std::begin(range1), std::end(range1), first2);
 }
 
 /*!
@@ -51,7 +48,7 @@ inline bool equal(const InputRange1& range1, InputIterator2 first2) {
 */
 template <class InputRange1, class InputIterator2, class BinaryPredicate>
 inline bool equal(const InputRange1& range1, InputIterator2 first2, BinaryPredicate pred) {
-    return adobe::equal(boost::begin(range1), boost::end(range1), first2, pred);
+    return adobe::equal(std::begin(range1), std::end(range1), first2, pred);
 }
 
 /*************************************************************************************************/

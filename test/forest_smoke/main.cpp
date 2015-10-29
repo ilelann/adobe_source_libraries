@@ -11,13 +11,12 @@
 
 #include <adobe/algorithm.hpp>
 #include <adobe/forest.hpp>
-#include <boost/range.hpp>
 
 template <typename R> // R is a depth adaptor range
 void output(const R& f) {
     typedef typename boost::range_iterator<R>::type iterator;
 
-    for (iterator first(boost::begin(f)), last(boost::end(f)); first != last; ++first) {
+    for (iterator first(std::begin(f)), last(std::end(f)); first != last; ++first) {
         for (typename iterator::difference_type i(first.depth()); i != 0; --i) {
             std::cout << "\t";
         }

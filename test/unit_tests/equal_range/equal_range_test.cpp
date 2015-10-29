@@ -27,8 +27,8 @@ BOOST_AUTO_TEST_CASE(equal_range_test) {
     using adobe::equal_range;
     using adobe::equal_range_n;
     using adobe::aggregate_pair;
-    using boost::begin;
-    using boost::end;
+    using std::begin;
+    using std::end;
     using boost::size;
 
     aggregate_pair<int> a[] = {{0, 0}, {0, 1}, {1, 2}, {1, 3}, {3, 4}, {3, 5}};

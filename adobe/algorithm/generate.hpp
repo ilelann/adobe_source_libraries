@@ -10,9 +10,6 @@
 
 #include <adobe/config.hpp>
 
-#include <boost/range/begin.hpp>
-#include <boost/range/end.hpp>
-
 #include <algorithm>
 
 /*************************************************************************************************/
@@ -35,7 +32,7 @@ namespace adobe {
 */
 template <class ForwardRange, class Generator>
 inline void generate(ForwardRange& range, Generator gen) {
-    std::generate(boost::begin(range), boost::end(range), gen);
+    std::generate(std::begin(range), std::end(range), gen);
 }
 
 /*************************************************************************************************/

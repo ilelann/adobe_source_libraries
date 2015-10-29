@@ -11,9 +11,6 @@
 #include <adobe/is_range.hpp>
 #include <adobe/dictionary.hpp>
 
-#include <boost/range/begin.hpp>
-#include <boost/range/end.hpp>
-#include <boost/range/value_type.hpp>
 #include <boost/array.hpp>
 #include <boost/utility/value_init.hpp>
 
@@ -59,9 +56,9 @@ struct dictionary_arg_stream_base {
     iterator curr;
 
     dictionary_arg_stream_base(dictionary_type& d, range_type const& key_range)
-        : dict(d), range(key_range), curr(boost::begin(key_range)) {}
+        : dict(d), range(key_range), curr(std::begin(key_range)) {}
 
-    bool eof() const { return curr == boost::end(range); }
+    bool eof() const { return curr == std::end(range); }
 
     void throw_if_eof() const {
         if (eof()) {
@@ -69,7 +66,7 @@ struct dictionary_arg_stream_base {
         }
     }
 
-    void reset() { curr = boost::begin(range); }
+    void reset() { curr = std::begin(range); }
 };
 
 /*!

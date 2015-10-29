@@ -309,16 +309,14 @@ private:
 
     // Note that these ranges assume non-empty.
 
-    typedef std::pair<const_iterator, const_iterator> const_range;
+    typedef iterator_range<const_iterator> const_range;
 
     const_range first_range() const {
-        return const_range(begin_m,
-                           begin_m < end_m ? const_iterator(end_m) : boost::end(container_m));
+        return {const_iterator(begin_m), begin_m < end_m ? const_iterator(end_m) : std::end(container_m)};
     }
 
     const_range second_range() const {
-        return const_range(begin_m < end_m ? const_iterator(end_m) : boost::begin(container_m),
-                           end_m);
+        return {begin_m < end_m ? const_iterator(end_m) : std::begin(container_m), const_iterator(end_m)};
     }
 
 #endif // !defined(ADOBE_NO_DOCUMENTATION)
@@ -328,7 +326,7 @@ private:
 
 template <typename T>
 circular_queue<T>::circular_queue(std::size_t capacity)
-    : container_m(capacity), begin_m(boost::begin(container_m)), end_m(boost::begin(container_m)),
+    : container_m(capacity), begin_m(std::begin(container_m)), end_m(std::begin(container_m)),
       is_empty_m(true) {}
 
 #if !defined(ADOBE_NO_DOCUMENTATION)
@@ -337,8 +335,8 @@ circular_queue<T>::circular_queue(std::size_t capacity)
 
 template <typename T>
 circular_queue<T>::circular_queue(const circular_queue& rhs)
-    : container_m(rhs.capacity()), begin_m(boost::begin(container_m)),
-      end_m(boost::begin(container_m)), is_empty_m(rhs.is_empty_m) {
+    : container_m(rhs.capacity()), begin_m(std::begin(container_m)),
+      end_m(std::begin(container_m)), is_empty_m(rhs.is_empty_m) {
     if (is_empty_m)
         return;
 
@@ -379,8 +377,8 @@ void circular_queue<T>::push_back(T x) {
 
     bool was_full(full());
 
-    if (++end_m == boost::end(container_m))
-        end_m = boost::begin(container_m);
+    if (++end_m == std::end(container_m))
+        end_m = std::begin(container_m);
     if (was_full)
         begin_m = end_m;
 
@@ -392,8 +390,8 @@ void circular_queue<T>::push_back(T x) {
 template <typename T>
 void circular_queue<T>::pop_front() ADOBE_NOTHROW {
     assert(!empty());
-    if (++begin_m == boost::end(container_m))
-        begin_m = boost::begin(container_m);
+    if (++begin_m == std::end(container_m))
+        begin_m = std::begin(container_m);
     is_empty_m = begin_m == end_m;
 }
 
@@ -402,8 +400,8 @@ void circular_queue<T>::pop_front() ADOBE_NOTHROW {
 template <typename T>
 void circular_queue<T>::putback() ADOBE_NOTHROW {
     assert(!full());
-    if (begin_m == boost::begin(container_m))
-        begin_m = boost::end(container_m);
+    if (begin_m == std::begin(container_m))
+        begin_m = std::end(container_m);
     --begin_m;
     is_empty_m = false;
 }

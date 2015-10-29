@@ -12,8 +12,6 @@
 
 #include <iterator>
 
-#include <boost/range/difference_type.hpp>
-
 /*************************************************************************************************/
 
 namespace adobe {
@@ -25,8 +23,8 @@ namespace adobe {
 */
 
 template <typename I> // I models InputRange
-inline boost::difference_type<I>::type distance(I& range) {
-    return std::distance(boost::begin(range), boost::end(range));
+inline auto distance(I& range) {
+    return std::distance(std::begin(range), std::end(range));
 }
 
 /*************************************************************************************************/

@@ -10,10 +10,6 @@
 
 #include <adobe/config.hpp>
 
-#include <boost/range/begin.hpp>
-#include <boost/range/end.hpp>
-#include <boost/range/iterator.hpp>
-
 #include <adobe/iterator/set_next.hpp>
 
 #include <algorithm>
@@ -59,7 +55,7 @@ template <typename R, // R models NodeRange
           typename I>
 // I models NodeIterator
 inline I reverse_append(R& range, I result) {
-    return adobe::unsafe::reverse_append(boost::begin(range), boost::end(range), result);
+    return adobe::unsafe::reverse_append(std::begin(range), std::end(range), result);
 }
 
 /*!
@@ -74,8 +70,8 @@ inline I reverse_nodes(I first, I last) {
 \ingroup node_algorithm
 */
 template <typename R> // R models NodeRange
-inline typename boost::range_iterator<R>::type reverse_nodes(R& range) {
-    return adobe::unsafe::reverse_nodes(boost::begin(range), boost::end(range));
+inline auto reverse_nodes(R& range) {
+    return adobe::unsafe::reverse_nodes(std::begin(range), std::end(range));
 }
 
 /*************************************************************************************************/
@@ -90,7 +86,7 @@ inline typename boost::range_iterator<R>::type reverse_nodes(R& range) {
 */
 template <class BidirectionalRange>
 inline void reverse(BidirectionalRange& range) {
-    std::reverse(boost::begin(range), boost::end(range));
+    std::reverse(std::begin(range), std::end(range));
 }
 
 /*!
@@ -100,7 +96,7 @@ inline void reverse(BidirectionalRange& range) {
 */
 template <class BidirectionalRange, class OutputIterator>
 inline void reverse_copy(BidirectionalRange& range, OutputIterator result) {
-    std::reverse_copy(boost::begin(range), boost::end(range), result);
+    std::reverse_copy(std::begin(range), std::end(range), result);
 }
 
 /*!
@@ -110,7 +106,7 @@ inline void reverse_copy(BidirectionalRange& range, OutputIterator result) {
 */
 template <class BidirectionalRange, class OutputIterator>
 inline void reverse_copy(const BidirectionalRange& range, OutputIterator result) {
-    std::reverse_copy(boost::begin(range), boost::end(range), result);
+    std::reverse_copy(std::begin(range), std::end(range), result);
 }
 
 /*************************************************************************************************/

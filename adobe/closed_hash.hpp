@@ -27,7 +27,6 @@
 #include <boost/type_traits/has_nothrow_constructor.hpp>
 #include <boost/type_traits/remove_reference.hpp>
 #include <boost/operators.hpp>
-#include <boost/next_prior.hpp>
 
 #include <adobe/algorithm/lower_bound.hpp>
 #include <adobe/conversion.hpp>
@@ -377,7 +376,7 @@ public:
     const_reverse_iterator rend() const { return const_reverse_iterator(begin()); }
 
     iterator erase(iterator location) {
-        iterator next(boost::next(location));
+        iterator next(std::next(location));
         iterator result = next;
 
         if ((location.state() == std::size_t(state_home)) && (next != end()) &&
@@ -427,14 +426,14 @@ public:
         const_iterator result = find(key);
         if (result == end())
             return std::make_pair(result, result);
-        return std::make_pair(result, boost::next(result));
+        return std::make_pair(result, std::next(result));
     }
 
     std::pair<iterator, iterator> equal_range(const key_type& key) {
         iterator result = find(key);
         if (result == end())
             return std::make_pair(result, result);
-        return std::make_pair(result, boost::next(result));
+        return std::make_pair(result, std::next(result));
     }
 
     std::size_t count(const key_type& key) const { return std::size_t(find(key) != end()); }
@@ -484,8 +483,8 @@ public:
             iterator free(begin_free());
             insert_raw(free, std::move(*node), state_misplaced);
 
-            unsafe::set_next(boost::prior(node), free);
-            unsafe::set_next(free, boost::next(node));
+            unsafe::set_next(std::prev(node), free);
+            unsafe::set_next(free, std::next(node));
 
             erase_raw(node);
         }

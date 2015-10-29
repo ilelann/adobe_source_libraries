@@ -9,10 +9,6 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include <boost/next_prior.hpp>
-#include <boost/range/begin.hpp>
-#include <boost/range/end.hpp>
-
 #include <adobe/closed_hash.hpp>
 #include <adobe/test/check_regular.hpp>
 #include <cassert>

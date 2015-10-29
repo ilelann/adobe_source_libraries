@@ -21,6 +21,7 @@
 
 #include <iostream>
 #include <cstdio>
+#include <iterator>
 
 #include <boost/function.hpp>
 #include <boost/array.hpp>
@@ -57,12 +58,12 @@ public:
     void putback_token();
     void put_token(const token_type& token);
 
-    void init_token(token_type& token) { token.range_m.first = first_m; }
+    void init_token(token_type& token) { token.range_m = token_range_t {first_m, std::end(token.range_m)}; }
     void finalize_token(token_type& token, E enumeration) {
-        token.range_m.second = first_m;
+        token.range_m = token_range_t{std::begin(token.range_m), first_m};
         token.enum_m = enumeration;
     }
-    void reset_lex(const token_type& token) { first_m = token.range_m.first; }
+    void reset_lex(const token_type& token) { first_m = std::begin(token.range_m); }
 
     void advance_lex() { ++first_m; }
     bool peek_char(char& c) {

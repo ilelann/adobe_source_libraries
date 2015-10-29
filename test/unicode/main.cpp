@@ -9,7 +9,6 @@
 #include <adobe/unicode.hpp>
 
 #include <boost/cstdint.hpp>
-#include <boost/next_prior.hpp>
 
 #include <iostream>
 #include <stdexcept>
@@ -137,7 +136,7 @@ void bug_test_from_07_27_2008() {
     utf8_buffer_t result;
     boost::uint32_t v(0x10abcd);
 
-    adobe::copy_utf<boost::uint8_t>(&v, boost::next(&v), back_inserter(result));
+    adobe::copy_utf<boost::uint8_t>(&v, std::next(&v), back_inserter(result));
 
     std::cout << std::hex;
 

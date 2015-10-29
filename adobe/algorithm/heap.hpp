@@ -10,9 +10,6 @@
 
 #include <adobe/config.hpp>
 
-#include <boost/range/begin.hpp>
-#include <boost/range/end.hpp>
-
 #include <algorithm>
 #include <functional>
 
@@ -39,7 +36,7 @@ namespace adobe {
 */
 template <class RandomAccessRange>
 inline void push_heap(RandomAccessRange& range) {
-    return std::push_heap(boost::begin(range), boost::end(range));
+    return std::push_heap(std::begin(range), std::end(range));
 }
 
 /*!
@@ -59,7 +56,7 @@ inline void push_heap(RandomAccessIterator first, RandomAccessIterator last, Com
 */
 template <class RandomAccessRange, class Compare>
 inline void push_heap(RandomAccessRange& range, Compare comp) {
-    return adobe::push_heap(boost::begin(range), boost::end(range), comp);
+    return adobe::push_heap(std::begin(range), std::end(range), comp);
 }
 
 /*!
@@ -69,7 +66,7 @@ inline void push_heap(RandomAccessRange& range, Compare comp) {
 */
 template <class RandomAccessRange>
 inline void pop_heap(RandomAccessRange& range) {
-    return std::pop_heap(boost::begin(range), boost::end(range));
+    return std::pop_heap(std::begin(range), std::end(range));
 }
 
 /*!
@@ -89,7 +86,7 @@ inline void pop_heap(RandomAccessIterator first, RandomAccessIterator last, Comp
 */
 template <class RandomAccessRange, class Compare>
 inline void pop_heap(RandomAccessRange& range, Compare comp) {
-    return adobe::pop_heap(boost::begin(range), boost::end(range), comp);
+    return adobe::pop_heap(std::begin(range), std::end(range), comp);
 }
 
 /*!
@@ -99,7 +96,7 @@ inline void pop_heap(RandomAccessRange& range, Compare comp) {
 */
 template <class RandomAccessRange>
 inline void make_heap(RandomAccessRange& range) {
-    return std::make_heap(boost::begin(range), boost::end(range));
+    return std::make_heap(std::begin(range), std::end(range));
 }
 
 /*!
@@ -119,7 +116,7 @@ inline void make_heap(RandomAccessIterator first, RandomAccessIterator last, Com
 */
 template <class RandomAccessRange, class Compare>
 inline void make_heap(RandomAccessRange& range, Compare comp) {
-    return adobe::make_heap(boost::begin(range), boost::end(range), comp);
+    return adobe::make_heap(std::begin(range), std::end(range), comp);
 }
 
 /*!
@@ -129,7 +126,7 @@ inline void make_heap(RandomAccessRange& range, Compare comp) {
 */
 template <class RandomAccessRange>
 inline void sort_heap(RandomAccessRange& range) {
-    return std::sort_heap(boost::begin(range), boost::end(range));
+    return std::sort_heap(std::begin(range), std::end(range));
 }
 
 /*!
@@ -149,7 +146,7 @@ inline void sort_heap(RandomAccessIterator first, RandomAccessIterator last, Com
 */
 template <class RandomAccessRange, class Compare>
 inline void sort_heap(RandomAccessRange& range, Compare comp) {
-    return adobe::sort_heap(boost::begin(range), boost::end(range), comp);
+    return adobe::sort_heap(std::begin(range), std::end(range), comp);
 }
 
 /*************************************************************************************************/

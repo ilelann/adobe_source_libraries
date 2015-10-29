@@ -137,7 +137,7 @@ protected:
             throw std::range_error(buf.str());
         }
 
-        return *boost::next(stack_m.begin(), n);
+        return *std::next(stack_m.begin(), n);
     }
 
     stack_value_type& stack_n(std::size_t n) {
@@ -148,7 +148,7 @@ protected:
             throw std::range_error(buf.str());
         }
 
-        return *boost::next(stack_m.begin(), n);
+        return *std::next(stack_m.begin(), n);
     }
 
     void up() { ++depth_m; }

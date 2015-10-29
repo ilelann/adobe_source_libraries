@@ -10,9 +10,6 @@
 
 #include <adobe/config.hpp>
 
-#include <boost/range/begin.hpp>
-#include <boost/range/end.hpp>
-
 #include <algorithm>
 #include <functional>
 
@@ -47,7 +44,7 @@ inline OutputIterator transform(InputIterator first, InputIterator last, OutputI
 */
 template <class InputRange, class OutputIterator, class UnaryOperation>
 inline OutputIterator transform(InputRange& range, OutputIterator result, UnaryOperation op) {
-    return adobe::transform(boost::begin(range), boost::end(range), result, op);
+    return adobe::transform(std::begin(range), std::end(range), result, op);
 }
 
 
@@ -58,7 +55,7 @@ inline OutputIterator transform(InputRange& range, OutputIterator result, UnaryO
 */
 template <class InputRange, class OutputIterator, class UnaryOperation>
 inline OutputIterator transform(const InputRange& range, OutputIterator result, UnaryOperation op) {
-    return adobe::transform(boost::begin(range), boost::end(range), result, op);
+    return adobe::transform(std::begin(range), std::end(range), result, op);
 }
 
 
@@ -81,7 +78,7 @@ inline OutputIterator transform(InputIterator1 first1, InputIterator1 last1, Inp
 template <class InputRange1, class InputIterator2, class OutputIterator, class BinaryOperation>
 inline OutputIterator transform(InputRange1& range1, InputIterator2 first2, OutputIterator result,
                                 BinaryOperation binary_op) {
-    return adobe::transform(boost::begin(range1), boost::end(range1), first2, result, binary_op);
+    return adobe::transform(std::begin(range1), std::end(range1), first2, result, binary_op);
 }
 
 /*!
@@ -92,7 +89,7 @@ inline OutputIterator transform(InputRange1& range1, InputIterator2 first2, Outp
 template <class InputRange1, class InputIterator2, class OutputIterator, class BinaryOperation>
 inline OutputIterator transform(const InputRange1& range1, InputIterator2 first2,
                                 OutputIterator result, BinaryOperation binary_op) {
-    return adobe::transform(boost::begin(range1), boost::end(range1), first2, result, binary_op);
+    return adobe::transform(std::begin(range1), std::end(range1), first2, result, binary_op);
 }
 
 /*************************************************************************************************/

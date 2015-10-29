@@ -19,7 +19,6 @@
 #include <boost/operators.hpp>
 #include <boost/iterator/indirect_iterator.hpp>
 #include <boost/iterator/transform_iterator.hpp>
-#include <boost/next_prior.hpp>
 #include <boost/type_traits/remove_reference.hpp>
 #include <boost/bind.hpp>
 

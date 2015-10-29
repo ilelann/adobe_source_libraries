@@ -49,15 +49,15 @@ void print_selection(const ForwardRange& range, const adobe::selection_t& select
     typedef typename ForwardRange::const_iterator set_const_iterator;
     typedef typename adobe::selection_t::const_iterator selection_const_iterator;
 
-    set_const_iterator iter(boost::begin(range));
-    set_const_iterator last(boost::end(range));
-    selection_const_iterator s_iter(boost::begin(selection));
-    selection_const_iterator s_last(boost::end(selection));
+    set_const_iterator iter(std::begin(range));
+    set_const_iterator last(std::end(range));
+    selection_const_iterator s_iter(std::begin(selection));
+    selection_const_iterator s_last(std::end(selection));
     bool inside(selection.start_selected());
     std::stringstream selection_output;
 
     while (iter != last) {
-        if (s_iter != s_last && iter == boost::next(boost::begin(range), *s_iter)) {
+        if (s_iter != s_last && iter == std::next(std::begin(range), *s_iter)) {
             inside = !inside;
 
             ++s_iter;
@@ -104,7 +104,7 @@ void do_split_selection(const adobe::selection_t& selection, std::size_t p,
 
     std::cout << p << " selection boundary " << static_cast<int>(result.second) << "; ";
 
-    if (result.first == boost::end(selection))
+    if (result.first == std::end(selection))
         std::cout << "returned selection split is (end)";
     else
         std::cout << "returned selection split is " << *result.first;

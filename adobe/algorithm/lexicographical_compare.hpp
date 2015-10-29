@@ -10,9 +10,6 @@
 
 #include <adobe/config.hpp>
 
-#include <boost/range/begin.hpp>
-#include <boost/range/end.hpp>
-
 #include <algorithm>
 #include <functional>
 
@@ -36,8 +33,8 @@ namespace adobe {
 */
 template <class InputRange1, class InputRange2>
 inline bool lexicographical_compare(const InputRange1& range1, const InputRange2& range2) {
-    return std::lexicographical_compare(boost::begin(range1), boost::end(range1),
-                                        boost::begin(range2), boost::end(range2));
+    return std::lexicographical_compare(std::begin(range1), std::end(range1),
+                                        std::begin(range2), std::end(range2));
 }
 
 /*!
@@ -59,8 +56,8 @@ inline bool lexicographical_compare(InputIterator1 first1, InputIterator1 last1,
 template <class InputRange1, class InputRange2, class Compare>
 inline bool lexicographical_compare(const InputRange1& range1, const InputRange2& range2,
                                     Compare comp) {
-    return adobe::lexicographical_compare(boost::begin(range1), boost::end(range1),
-                                          boost::begin(range2), boost::end(range2), comp);
+    return adobe::lexicographical_compare(std::begin(range1), std::end(range1),
+                                          std::begin(range2), std::end(range2), comp);
 }
 
 /*************************************************************************************************/

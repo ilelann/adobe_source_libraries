@@ -184,7 +184,7 @@ context_frame_t::exact_match_exists(const adobe::attribute_set_t& attribute_set,
         the_range, element_t(attribute_set, value),
         adobe::compare_members(&store_value_type::second, std::equal_to<element_t>()));
 
-    result.first = result.second != the_range.second;
+    result.first = result.second != std::end(the_range);
 
     return result;
 }
@@ -193,7 +193,7 @@ context_frame_t::exact_match_exists(const adobe::attribute_set_t& attribute_set,
 
 token_range_t context_frame_t::clone(const token_range_t& range) {
     // std::size_t len(boost::size(range));
-    std::string str(boost::begin(range), boost::end(range));
+    std::string str(std::begin(range), std::end(range));
     const char* added(pool_m.add(str.c_str()));
 
     return token_range_t(reinterpret_cast<uchar_ptr_t>(added),
@@ -205,7 +205,7 @@ token_range_t context_frame_t::clone(const token_range_t& range) {
 context_frame_t::store_t::mapped_type*
 context_frame_t::store(const store_t::key_type& key, const adobe::attribute_set_t& attribute_set,
                        const adobe::token_range_t& value, bool copy) {
-    assert(std::distance(boost::begin(key), boost::end(key)));
+    assert(std::distance(std::begin(key), std::end(key)));
 
     store_t::key_type to_key(key);
     adobe::attribute_set_t to_mapped_attribute_set(attribute_set);
@@ -291,15 +291,15 @@ struct transform_range {
 
     transform_range(Range& range, UnaryFunction f) : range_m(range), f_m(f) {}
 
-    iterator begin() { return iterator(boost::begin(range_m), f_m); }
+    iterator begin() { return iterator(std::begin(range_m), f_m); }
 
-    iterator end() { return iterator(boost::end(range_m), f_m); }
+    iterator end() { return iterator(std::end(range_m), f_m); }
 #if 0
     const_iterator begin() const
-        { return const_iterator(boost::begin(range_m), f_m); }
+        { return const_iterator(std::begin(range_m), f_m); }
 
     const_iterator end() const
-        { return const_iterator(boost::end(range_m), f_m); }
+        { return const_iterator(std::end(range_m), f_m); }
 #endif
 private:
     Range& range_m;
@@ -329,7 +329,7 @@ context_frame_t::store_iterator
 context_frame_t::closest_match(store_range_pair_t range, const adobe::attribute_set_t& searching) {
     typedef std::iterator_traits<store_iterator>::difference_type difference_type;
 
-    difference_type range_size(std::distance(boost::begin(range), boost::end(range)));
+    difference_type range_size(std::distance(std::begin(range), std::end(range)));
 
     if (!range_size)
         return glossary_m.end();
@@ -522,15 +522,14 @@ struct replacement_engine_t {
         implementation::context_frame_t::store_range_pair_t range(
             implementation::top_frame().range_for_key(xstring_id_m));
 #ifndef NDEBUG
-        std::iterator_traits<implementation::context_frame_t::store_iterator>::difference_type
-        range_size(std::distance(range.first, range.second));
+        auto range_size = std::distance(begin(range), end(range));
 #endif
 
-        for (; range.first != range.second; ++range.first) {
+        for (auto e : range) {
             int score(0);
-            const token_range_t& cur_token_range(range.first->second.second);
-            uchar_ptr_t first(cur_token_range.first);
-            uchar_ptr_t last(cur_token_range.second);
+            const token_range_t& cur_token_range = e.second.second;
+            uchar_ptr_t first = begin(cur_token_range);
+            uchar_ptr_t last = end(cur_token_range);
             std::string temp_result;
 
             adobe::make_xml_parser(first, last, adobe::line_position_t("replacement_engine_t::run"),
@@ -570,7 +569,7 @@ private:
         xstr_once();
 
         if (token_range_equal(name, *xstr_tag_g) &&
-            !std::distance(boost::begin(xstring_id_m), boost::begin(xstring_id_m)))
+            !std::distance(std::begin(xstring_id_m), std::begin(xstring_id_m)))
             xstring_id_m = attribute_set[*attribute_id_g];
 
         return adobe::token_range_t();
@@ -619,7 +618,7 @@ private:
 #if 0
         else
         {
-            return std::distance(boost::begin(name), boost::end(name)) ? xml_element_echo(entire_element_range, name, attribute_set, value) : value;
+            return std::distance(std::begin(name), std::end(name)) ? xml_element_echo(entire_element_range, name, attribute_set, value) : value;
         }
 #endif
 

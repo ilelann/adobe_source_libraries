@@ -15,9 +15,6 @@
 #include <iterator>
 #include <functional>
 
-#include <boost/next_prior.hpp>
-#include <boost/range/begin.hpp>
-#include <boost/range/end.hpp>
 #include <boost/type_traits/is_same.hpp>
 #include <boost/utility/enable_if.hpp>
 
@@ -42,10 +39,10 @@ I upper_bound_n(I f, N n, const T& x, C c, P p) {
     while (n != 0) {
         N h = n >> 1;
 
-        I m = boost::next(f, h);
+        I m = std::next(f, h);
 
         if (!c(x, p(*m))) {
-            f = boost::next(m);
+            f = std::next(m);
             n -= h + N(1);
         } else {
             n = h;
@@ -149,9 +146,9 @@ template <typename I, // I models ForwardRange
           typename T, // T == result_type(P)
           typename C, // C models StrictWeakOrdering(T, T)
           typename P> // P models UnaryFunction(value_type(I)) -> T
-inline typename boost::lazy_disable_if<boost::is_same<I, T>, boost::range_iterator<I>>::type
-upper_bound(I& r, const T& x, C c, P p) {
-    return adobe::upper_bound(boost::begin(r), boost::end(r), x, c, p);
+inline auto
+upper_bound(I& r, const T& x, C c, P p, std::enable_if_t<!std::is_same<I, T>::value>* = 0) {
+    return adobe::upper_bound(std::begin(r), std::end(r), x, c, p);
 }
 
 /*************************************************************************************************/
@@ -160,9 +157,9 @@ template <typename I, // I models ForwardRange
           typename T, // T == result_type(P)
           typename C, // C models StrictWeakOrdering(T, T)
           typename P> // P models UnaryFunction(value_type(I)) -> T
-inline typename boost::lazy_disable_if<boost::is_same<I, T>, boost::range_const_iterator<I>>::type
-upper_bound(const I& r, const T& x, C c, P p) {
-    return adobe::upper_bound(boost::begin(r), boost::end(r), x, c, p);
+inline auto
+upper_bound(const I& r, const T& x, C c, P p, std::enable_if_t<!std::is_same<I, T>::value>* = 0) {
+    return adobe::upper_bound(std::begin(r), std::end(r), x, c, p);
 }
 
 /*************************************************************************************************/
@@ -172,9 +169,8 @@ upper_bound(const I& r, const T& x, C c, P p) {
     \brief upper_bound implementation
 */
 template <class ForwardRange, class T>
-inline typename boost::range_iterator<ForwardRange>::type upper_bound(ForwardRange& range,
-                                                                      const T& value) {
-    return std::upper_bound(boost::begin(range), boost::end(range), value);
+inline auto upper_bound(ForwardRange& range, const T& value) {
+    return std::upper_bound(std::begin(range), std::end(range), value);
 }
 
 /*!
@@ -183,9 +179,9 @@ inline typename boost::range_iterator<ForwardRange>::type upper_bound(ForwardRan
     \brief upper_bound implementation
 */
 template <class ForwardRange, class T>
-inline typename boost::range_const_iterator<ForwardRange>::type
+inline auto
 upper_bound(const ForwardRange& range, const T& value) {
-    return std::upper_bound(boost::begin(range), boost::end(range), value);
+    return std::upper_bound(std::begin(range), std::end(range), value);
 }
 
 /*!
@@ -199,9 +195,9 @@ upper_bound(const ForwardRange& range, const T& value) {
     \brief upper_bound implementation
 */
 template <typename I, class T, class Compare>
-inline typename boost::lazy_disable_if<boost::is_same<I, T>, boost::range_iterator<I>>::type
-upper_bound(I& range, const T& value, Compare comp) {
-    return adobe::upper_bound(boost::begin(range), boost::end(range), value, comp);
+inline auto
+upper_bound(I& range, const T& value, Compare comp, std::enable_if_t<!std::is_same<I, T>::value>* = 0) {
+    return adobe::upper_bound(std::begin(range), std::end(range), value, comp);
 }
 
 /*!
@@ -210,9 +206,9 @@ upper_bound(I& range, const T& value, Compare comp) {
     \brief upper_bound implementation
 */
 template <class I, class T, class Compare>
-inline typename boost::lazy_disable_if<boost::is_same<I, T>, boost::range_const_iterator<I>>::type
-upper_bound(const I& range, const T& value, Compare comp) {
-    return adobe::upper_bound(boost::begin(range), boost::end(range), value, comp);
+inline auto
+upper_bound(const I& range, const T& value, Compare comp, std::enable_if_t<!std::is_same<I, T>::value>* = 0) {
+    return adobe::upper_bound(std::begin(range), std::end(range), value, comp);
 }
 
 /*************************************************************************************************/

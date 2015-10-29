@@ -51,8 +51,8 @@ BOOST_TEST_CASE_TEMPLATE_FUNCTION(test_erase_if, Container) {
         // metafunction. maybe right solution is to entirely replace
         // begin/end/size, given the as_literal issue (search
         // BOOST_AS_LITERAL_ISSUE)
-        BOOST_CHECK(distance(boost::begin(x), boost::end(x)) == 5);
-        BOOST_CHECK(find(x, 4) == boost::end(x));
+        BOOST_CHECK(distance(std::begin(x), std::end(x)) == 5);
+        BOOST_CHECK(find(x, 4) == std::end(x));
     }
 }
 
@@ -74,8 +74,8 @@ BOOST_TEST_CASE_TEMPLATE_FUNCTION(test_key_value_erase_if, Container) {
         // metafunction. maybe right solution is to entirely replace
         // begin/end/size, given the as_literal issue (search
         // BOOST_AS_LITERAL_ISSUE)
-        BOOST_CHECK(distance(boost::begin(x), boost::end(x)) == 5);
-        BOOST_CHECK(find(x, typename Container::value_type(4, 2)) == boost::end(x));
+        BOOST_CHECK(distance(std::begin(x), std::end(x)) == 5);
+        BOOST_CHECK(find(x, typename Container::value_type(4, 2)) == std::end(x));
     }
 }
 

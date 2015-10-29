@@ -13,9 +13,6 @@
 #include <algorithm>
 #include <functional>
 
-#include <boost/range/begin.hpp>
-#include <boost/range/end.hpp>
-
 #include <adobe/algorithm/select.hpp>
 
 #include <adobe/functional/operator.hpp>
@@ -154,8 +151,8 @@ inline T&(max)(T& a, T& b) {
     \brief minmax implementation
 */
 template <class ForwardRange>
-inline typename boost::range_iterator<ForwardRange>::type min_element(ForwardRange& range) {
-    return std::min_element(boost::begin(range), boost::end(range));
+inline auto min_element(ForwardRange& range) {
+    return std::min_element(std::begin(range), std::end(range));
 }
 
 /*!
@@ -164,9 +161,9 @@ inline typename boost::range_iterator<ForwardRange>::type min_element(ForwardRan
     \brief minmax implementation
 */
 template <class ForwardRange>
-inline typename boost::range_const_iterator<ForwardRange>::type
+inline auto
 min_element(const ForwardRange& range) {
-    return std::min_element(boost::begin(range), boost::end(range));
+    return std::min_element(std::begin(range), std::end(range));
 }
 
 /*!
@@ -185,8 +182,8 @@ inline ForwardIterator min_element(ForwardIterator first, ForwardIterator last, 
     \brief minmax implementation
 */
 template <class ForwardRange, class R>
-inline typename boost::range_iterator<ForwardRange>::type min_element(ForwardRange& range, R r) {
-    return adobe::min_element(boost::begin(range), boost::end(range), r);
+inline auto min_element(ForwardRange& range, R r) {
+    return adobe::min_element(std::begin(range), std::end(range), r);
 }
 
 /*!
@@ -195,9 +192,9 @@ inline typename boost::range_iterator<ForwardRange>::type min_element(ForwardRan
     \brief minmax implementation
 */
 template <class ForwardRange, class R>
-inline typename boost::range_const_iterator<ForwardRange>::type
+inline auto
 min_element(const ForwardRange& range, R r) {
-    return adobe::min_element(boost::begin(range), boost::end(range), r);
+    return adobe::min_element(std::begin(range), std::end(range), r);
 }
 
 /*!
@@ -206,8 +203,8 @@ min_element(const ForwardRange& range, R r) {
     \brief minmax implementation
 */
 template <class ForwardRange>
-inline typename boost::range_iterator<ForwardRange>::type max_element(ForwardRange& range) {
-    return std::max_element(boost::begin(range), boost::end(range));
+inline auto max_element(ForwardRange& range) {
+    return std::max_element(std::begin(range), std::end(range));
 }
 
 /*!
@@ -216,9 +213,9 @@ inline typename boost::range_iterator<ForwardRange>::type max_element(ForwardRan
     \brief minmax implementation
 */
 template <class ForwardRange>
-inline typename boost::range_const_iterator<ForwardRange>::type
+inline auto
 max_element(const ForwardRange& range) {
-    return std::max_element(boost::begin(range), boost::end(range));
+    return std::max_element(std::begin(range), std::end(range));
 }
 
 /*!
@@ -237,8 +234,8 @@ inline ForwardIterator max_element(ForwardIterator first, ForwardIterator last, 
     \brief minmax implementation
 */
 template <class ForwardRange, class R>
-inline typename boost::range_iterator<ForwardRange>::type max_element(ForwardRange& range, R r) {
-    return adobe::max_element(boost::begin(range), boost::end(range), r);
+inline auto max_element(ForwardRange& range, R r) {
+    return adobe::max_element(std::begin(range), std::end(range), r);
 }
 
 /*!
@@ -247,9 +244,9 @@ inline typename boost::range_iterator<ForwardRange>::type max_element(ForwardRan
     \brief minmax implementation
 */
 template <class ForwardRange, class R>
-inline typename boost::range_const_iterator<ForwardRange>::type
+inline auto
 max_element(const ForwardRange& range, R r) {
-    return adobe::max_element(boost::begin(range), boost::end(range), r);
+    return adobe::max_element(std::begin(range), std::end(range), r);
 }
 
 /*************************************************************************************************/

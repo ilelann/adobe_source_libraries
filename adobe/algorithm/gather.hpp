@@ -17,10 +17,6 @@
 #include <algorithm> // for std::table_partition
 #include <functional>
 
-#include <boost/range/begin.hpp> // for boost::begin(range)
-#include <boost/range/end.hpp>   // for boost::end(range)
-
-
 /**************************************************************************************************/
 /*!
     \defgroup gather gather
@@ -91,11 +87,9 @@ std::pair<Iter, Iter> gather(Iter first, Iter last, Iter pivot, Pred pred) {
 
 template <typename BidirectionalRange, //
           typename Pred>               // Pred models UnaryPredicate
-std::pair<typename boost::range_iterator<BidirectionalRange>::type,
-          typename boost::range_iterator<BidirectionalRange>::type>
-gather(BidirectionalRange& range, typename boost::range_iterator<BidirectionalRange>::type pivot,
-       Pred pred) {
-    return adobe::gather(boost::begin(range), boost::end(range), pivot, pred);
+auto
+gather(BidirectionalRange& range, decltype(std::begin(range)) pivot, Pred pred) {
+    return adobe::gather(std::begin(range), std::end(range), pivot, pred);
 }
 
 /**************************************************************************************************/

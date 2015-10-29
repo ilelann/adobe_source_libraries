@@ -10,9 +10,6 @@
 
 #include <adobe/config.hpp>
 
-#include <boost/range/begin.hpp>
-#include <boost/range/end.hpp>
-
 #include <algorithm>
 #include <functional>
 
@@ -49,9 +46,8 @@ inline InputIterator find_match(InputIterator first, InputIterator last, const T
     \brief find_match implementation
 */
 template <class InputRange, class T, class Compare>
-inline typename boost::range_iterator<InputRange>::type find_match(InputRange& range,
-                                                                   const T& value, Compare comp) {
-    return adobe::find_match(boost::begin(range), boost::end(range), value, comp);
+inline auto find_match(InputRange& range, const T& value, Compare comp) {
+    return adobe::find_match(std::begin(range), std::end(range), value, comp);
 }
 
 /*!
@@ -60,9 +56,9 @@ inline typename boost::range_iterator<InputRange>::type find_match(InputRange& r
     \brief find_match implementation
 */
 template <class InputRange, class T, class Compare>
-inline typename boost::range_const_iterator<InputRange>::type
+inline auto
 find_match(const InputRange& range, const T& value, Compare comp) {
-    return adobe::find_match(boost::begin(range), boost::end(range), value, comp);
+    return adobe::find_match(std::begin(range), std::end(range), value, comp);
 }
 
 /*!
@@ -81,9 +77,8 @@ inline InputIterator find_match(InputIterator first, InputIterator last, const T
     \brief find_match implementation
 */
 template <class InputRange, class T, class Compare>
-inline typename boost::range_iterator<InputRange>::type find_match(InputRange& range,
-                                                                   const T& value) {
-    return adobe::find_match(boost::begin(range), boost::end(range), value);
+inline auto find_match(InputRange& range, const T& value) {
+    return adobe::find_match(std::begin(range), std::end(range), value);
 }
 
 /*!
@@ -92,9 +87,8 @@ inline typename boost::range_iterator<InputRange>::type find_match(InputRange& r
     \brief find_match implementation
 */
 template <class InputRange, class T, class Compare>
-inline typename boost::range_const_iterator<InputRange>::type find_match(const InputRange& range,
-                                                                         const T& value) {
-    return adobe::find_match(boost::begin(range), boost::end(range), value);
+inline auto find_match(const InputRange& range, const T& value) {
+    return adobe::find_match(std::begin(range), std::end(range), value);
 }
 
 

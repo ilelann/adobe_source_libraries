@@ -112,8 +112,8 @@ void init_once_() {
 
     adobe::sort(reflected);
 
-    reflected_table_range_s.first = boost::begin(reflected);
-    reflected_table_range_s.second = boost::end(reflected);
+    reflected_table_range_s.first = std::begin(reflected);
+    reflected_table_range_s.second = std::end(reflected);
 
     reflected_range_g = &reflected_table_range_s;
 }

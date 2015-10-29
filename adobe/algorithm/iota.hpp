@@ -12,9 +12,6 @@
 
 #include <adobe/functional.hpp>
 
-#include <boost/range/begin.hpp>
-#include <boost/range/end.hpp>
-
 #include <algorithm>
 
 /*************************************************************************************************/
@@ -67,7 +64,7 @@ T iota(ForwardIterator first, ForwardIterator last, const T& value) {
 */
 template <class ForwardRange, class T>
 T iota(ForwardRange& range, const T& value) {
-    return adobe::iota(boost::begin(range), boost::end(range), value);
+    return adobe::iota(std::begin(range), std::end(range), value);
 }
 
 /*************************************************************************************************/

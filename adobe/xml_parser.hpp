@@ -713,7 +713,7 @@ void xml_parser_t<O>::content_callback(token_range_t& result_element,
             // the rest of the parse. The new parser has the same predicate and
             // output iterator as this one
 
-            xml_parser_t<O>(new_content.first, new_content.second, next_position(), pred_m,
+            xml_parser_t<O>(std::begin(new_content), std::end(new_content), next_position(), pred_m,
                             callback_m, output_m).parse_content();
         }
 
@@ -779,13 +779,13 @@ bool xml_parser_t<O>::is_element(token_range_t& element) {
 
     if (is_token(xml_token_slash_close_tag_k, close_tag)) {
         if (preorder_mode_m) {
-            content_callback(element, token_range_t(open_tag.first, close_tag.second), start_tag,
+            content_callback(element, token_range_t(std::begin(open_tag), std::end(close_tag)), start_tag,
                              attribute_set, token_range_t(), preorder_parent);
         } else {
             // in the case when we are not in preorder mode at all, we pass the element
             // to the client callback and output the token_range we receive back.
 
-            token_range_t result(callback_m(token_range_t(open_tag.first, close_tag.second),
+            token_range_t result(callback_m(token_range_t(std::begin(open_tag), std::end(close_tag)),
                                             start_tag, attribute_set, token_range_t()));
 
             adobe::copy(result, output_m);
@@ -805,7 +805,7 @@ bool xml_parser_t<O>::is_element(token_range_t& element) {
     // tag before we can go on to the content parsing.
 
     if (!preorder_mode_m)
-        std::copy(open_tag.first, close_of_open_tag.second, output_m);
+        std::copy(std::begin(open_tag), std::end(close_of_open_tag), output_m);
 
     if (!is_content(content))
         throw std::runtime_error("Content expected but not found.");
@@ -823,11 +823,11 @@ bool xml_parser_t<O>::is_element(token_range_t& element) {
         // we can go on to the rest of the parse.
 
         adobe::copy(content, output_m);
-        adobe::copy(token_range_t(end_tag.first - 2, end_tag.second + 1), output_m);
+        adobe::copy(token_range_t(std::begin(end_tag) - 2, std::end(end_tag) + 1), output_m);
     } else {
         // In this instance we are continuing a preorder parse...
 
-        content_callback(element, token_range_t(open_tag.first, close_tag.second), start_tag,
+        content_callback(element, token_range_t(std::begin(open_tag), std::end(close_tag)), start_tag,
                          attribute_set, content, preorder_parent);
     }
 
@@ -874,10 +874,7 @@ bool xml_parser_t<O>::is_content(token_range_t& content) {
                     // but extending (possibly even starting, too) the token_range
                     // for the preorder element.
 
-                    if (!content.first)
-                        content.first = result.first;
-
-                    content.second = result.second;
+                    content = token_range_t {!std::begin(content) ? std::begin(result) : std::begin(content), std::end(result)};
                 } else {
                     // if we're not in preorder mode, we pass the element's
                     // reference-transformed token_range result directly to
@@ -893,10 +890,7 @@ bool xml_parser_t<O>::is_content(token_range_t& content) {
                     // but extending (possibly even starting, too) the token_range
                     // for the preorder element.
 
-                    if (!content.first)
-                        content.first = result.first;
-
-                    content.second = result.second;
+                    content = token_range_t {!std::begin(content) ? std::begin(result) : std::begin(content), std::end(result)};
                 } else {
                     // if we're not in preorder mode, we pass the element's
                     // token_range result directly to the output.
@@ -922,7 +916,7 @@ bool xml_parser_t<O>::is_content(token_range_t& content) {
             // fullorder mode).
 
             if (preorder_mode_m) {
-                content.second = char_data.second;
+                content = token_range_t {std::begin(content), std::end(char_data)};
             } else {
                 adobe::copy(char_data, output_m);
             }
@@ -994,17 +988,16 @@ bool xml_parser_t<O>::is_bom(token_range_t& bom) {
     token_stream_m.set_skip_white_space(false);
 
     if (is_token(xml_token_char_data_k, bom)) {
-        if (boost::size(utf8_bom) <= boost::size(bom) && adobe::equal(utf8_bom, bom.first)) {
-            bom.second = bom.first;
-            std::advance(bom.second, boost::size(utf8_bom));
+        if (boost::size(utf8_bom) <= boost::size(bom) && adobe::equal(utf8_bom, std::begin(bom))) {
+            bom = token_range_t {std::begin(bom), std::begin(bom) + boost::size(utf8_bom)};
 
             result = true;
         } else if (boost::size(utf16_be_bom) <= boost::size(bom) &&
-                   adobe::equal(utf16_be_bom, bom.first)) {
+                   adobe::equal(utf16_be_bom, std::begin(bom))) {
             // it's a bom, but it's not a format the parser supports
             throw_exception("utf16be bom encountered; xml_parser_t only supports utf8 encoding");
         } else if (boost::size(utf16_le_bom) <= boost::size(bom) &&
-                   adobe::equal(utf16_le_bom, bom.first)) {
+                   adobe::equal(utf16_le_bom, std::begin(bom))) {
             // it's a bom, but it's not a format the parser supports
             throw_exception("utf16le bom encountered; xml_parser_t only supports utf8 encoding");
         }

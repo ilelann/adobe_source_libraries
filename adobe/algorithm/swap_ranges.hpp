@@ -10,9 +10,6 @@
 
 #include <adobe/config.hpp>
 
-#include <boost/range/begin.hpp>
-#include <boost/range/end.hpp>
-
 #include <algorithm>
 
 /*************************************************************************************************/
@@ -35,7 +32,7 @@ namespace adobe {
 */
 template <class ForwardRange1, class ForwardIterator2>
 inline ForwardIterator2 swap_ranges(ForwardRange1& range1, ForwardIterator2 first2) {
-    return std::swap_ranges(boost::begin(range1), boost::end(range1), first2);
+    return std::swap_ranges(std::begin(range1), std::end(range1), first2);
 }
 
 /*************************************************************************************************/

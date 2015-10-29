@@ -24,6 +24,7 @@
 #include <adobe/algorithm/lower_bound.hpp>
 #include <adobe/algorithm/mismatch.hpp>
 #include <adobe/algorithm/sort.hpp>
+#include <adobe/iterator_range.hpp>
 #include <adobe/name.hpp>
 #include <adobe/any_regular.hpp>
 #include <adobe/utility.hpp>
@@ -118,8 +119,8 @@ template <typename R1, // models InputRange
           typename R2>
 // models InputRange
 inline bool bounded_equal(R1& range1, R2& range2) {
-    return bounded_equal(boost::begin(range1), boost::end(range1), boost::begin(range2),
-                         boost::end(range2));
+    return bounded_equal(std::begin(range1), std::end(range1), std::begin(range2),
+                         std::end(range2));
 }
 
 /*************************************************************************************************/
@@ -142,7 +143,7 @@ and second value are equivalent, but any value. Typically this value is
 0, but this is not required.
 */
 
-typedef std::pair<uchar_ptr_t, uchar_ptr_t> token_range_t;
+typedef iterator_range<uchar_ptr_t> token_range_t;
 
 /*************************************************************************************************/
 
@@ -199,9 +200,9 @@ inline bool token_range_less(const token_range_t& x, const token_range_t& y) {
     else if (sizey < sizex)
         return false;
 
-    std::pair<uchar_ptr_t, uchar_ptr_t> diff(adobe::mismatch(x, boost::begin(y)));
+    std::pair<uchar_ptr_t, uchar_ptr_t> diff(adobe::mismatch(x, std::begin(y)));
 
-    if (diff.first == boost::end(x))
+    if (diff.first == std::end(x))
         return false;
 
     return *diff.first < *diff.second;

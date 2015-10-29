@@ -10,9 +10,6 @@
 
 #include <adobe/config.hpp>
 
-#include <boost/range/begin.hpp>
-#include <boost/range/end.hpp>
-
 #include <algorithm>
 #include <functional>
 
@@ -37,7 +34,7 @@ namespace adobe {
 */
 template <class ForwardRange>
 inline typename boost::range_iterator<ForwardRange>::type unique(ForwardRange& range) {
-    return std::unique(boost::begin(range), boost::end(range));
+    return std::unique(std::begin(range), std::end(range));
 }
 
 /*!
@@ -58,7 +55,7 @@ inline ForwardIterator unique(ForwardIterator first, ForwardIterator last, Binar
 template <class ForwardRange, class BinaryPredicate>
 inline typename boost::range_iterator<ForwardRange>::type unique(ForwardRange& range,
                                                                  BinaryPredicate pred) {
-    return adobe::unique(boost::begin(range), boost::end(range), pred);
+    return adobe::unique(std::begin(range), std::end(range), pred);
 }
 
 /*!
@@ -68,7 +65,7 @@ inline typename boost::range_iterator<ForwardRange>::type unique(ForwardRange& r
 */
 template <class InputRange, class OutputIterator>
 inline OutputIterator unique_copy(InputRange& range, OutputIterator result) {
-    return std::unique_copy(boost::begin(range), boost::end(range), result);
+    return std::unique_copy(std::begin(range), std::end(range), result);
 }
 
 /*!
@@ -78,7 +75,7 @@ inline OutputIterator unique_copy(InputRange& range, OutputIterator result) {
 */
 template <class InputRange, class OutputIterator>
 inline OutputIterator unique_copy(const InputRange& range, OutputIterator result) {
-    return std::unique_copy(boost::begin(range), boost::end(range), result);
+    return std::unique_copy(std::begin(range), std::end(range), result);
 }
 
 /*!
@@ -99,7 +96,7 @@ inline OutputIterator unique_copy(InputIterator first, InputIterator last, Outpu
 */
 template <class InputRange, class OutputIterator, class BinaryPredicate>
 inline OutputIterator unique_copy(InputRange& range, OutputIterator result, BinaryPredicate pred) {
-    return adobe::unique_copy(boost::begin(range), boost::end(range), result, pred);
+    return adobe::unique_copy(std::begin(range), std::end(range), result, pred);
 }
 
 /*!
@@ -110,7 +107,7 @@ inline OutputIterator unique_copy(InputRange& range, OutputIterator result, Bina
 template <class InputRange, class OutputIterator, class BinaryPredicate>
 inline OutputIterator unique_copy(const InputRange& range, OutputIterator result,
                                   BinaryPredicate pred) {
-    return adobe::unique_copy(boost::begin(range), boost::end(range), result, pred);
+    return adobe::unique_copy(std::begin(range), std::end(range), result, pred);
 }
 
 /*************************************************************************************************/

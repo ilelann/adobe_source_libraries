@@ -20,8 +20,6 @@
 #include <iterator>
 #include <utility>
 
-#include <boost/range.hpp>
-
 #include <boost/iterator/iterator_facade.hpp>
 #include <boost/iterator/iterator_traits.hpp>
 
@@ -123,24 +121,32 @@ private:
     else return category(bottom)
 */
 
+template <typename I>
+using iter_value_t = typename std::iterator_traits<I>::value_type;
+
+template <typename I>
+using iter_ref_t = typename std::iterator_traits<I>::reference;
+
+template <typename I>
+using iter_diff_t = typename std::iterator_traits<I>::difference_type;
+
 template <typename I> // I models an InputIterator where value_type(I) models Range
 class segmented_iterator
     : public boost::iterator_facade<
           segmented_iterator<I>,
-          typename boost::range_value<typename boost::iterator_value<I>::type>::type,
+          iter_value_t<iter_value_t<I>>,
           std::bidirectional_iterator_tag,
-          typename boost::iterator_reference<
-              typename boost::range_iterator<typename boost::iterator_value<I>::type>::type>::type,
-          typename boost::iterator_difference<typename boost::range_iterator<
-              typename boost::iterator_value<I>::type>::type>::type> {
+          iter_ref_t<iter_value_t<I>>,
+          iter_diff_t<iter_value_t<I>>>
+{
 public:
     segmented_iterator() : bucket_m(), end_m(), current_m() {}
     segmented_iterator(I first, I last) : bucket_m(first), end_m(last) {
-        while (bucket_m != end_m && boost::empty(*bucket_m)) {
+        while (bucket_m != end_m && (std::begin(*bucket_m) == std::end(*bucket_m))) {
             ++bucket_m;
         }
         if (bucket_m != end_m)
-            current_m = boost::begin(*bucket_m);
+            current_m = std::begin(*bucket_m);
     }
 
     segmented_iterator(const segmented_iterator& x)
@@ -158,11 +164,9 @@ public:
     }
 
 private:
-    typedef typename boost::iterator_reference<typename boost::range_iterator<
-        typename boost::iterator_value<I>::type>::type>::type reference_t;
+    typedef iter_ref_t<iter_value_t<I>> reference_t;
     typedef I top_iterator_t;
-    typedef typename boost::range_iterator<typename boost::iterator_value<I>::type>::type
-    bottom_iterator_t;
+    typedef typename iter_value_t<I>::iterator bottom_iterator_t;
 
     top_iterator_t bucket_m;
     top_iterator_t end_m;
@@ -187,39 +191,39 @@ private:
     void increment() {
         ++current_m;
 
-        while (current_m == boost::end(*bucket_m)) {
+        while (current_m == std::end(*bucket_m)) {
             ++bucket_m;
             if (bucket_m == end_m)
                 break;
-            current_m = boost::begin(*bucket_m);
+            current_m = std::begin(*bucket_m);
         }
     }
     void decrement() {
-        while (bucket_m == end_m || current_m == boost::begin(*bucket_m)) {
+        while (bucket_m == end_m || current_m == std::begin(*bucket_m)) {
             --bucket_m;
-            current_m = boost::end(*bucket_m);
+            current_m = std::end(*bucket_m);
         }
 
         --current_m;
     }
 };
 
-
 template <typename R> // R models ConvertibleToRange
-inline boost::iterator_range<segmented_iterator<typename boost::range_iterator<R>::type>>
+inline auto
 make_segmented_range(R& r) {
-    typedef segmented_iterator<typename boost::range_iterator<R>::type> iterator;
+    typedef segmented_iterator<decltype(std::begin(r))> iterator;
 
-    return boost::make_iterator_range(iterator(boost::begin(r), boost::end(r)),
-                                      iterator(boost::end(r), boost::end(r)));
+    return make_iterator_range(
+                iterator(std::begin(r), std::end(r)),
+                iterator(std::end(r), std::end(r)));
 }
 
-
 template <typename R> // R models ConvertibleToRange
-inline segmented_iterator<typename boost::range_iterator<R>::type> make_segmented_iterator(R& r) {
-    typedef segmented_iterator<typename boost::range_iterator<R>::type> iterator;
+inline auto
+make_segmented_iterator(R& r) {
+    typedef segmented_iterator<decltype(std::begin(r))> iterator;
 
-    return iterator(boost::begin(r), boost::end(r));
+    return iterator(std::begin(r), std::end(r));
 }
 
 /*************************************************************************************************/

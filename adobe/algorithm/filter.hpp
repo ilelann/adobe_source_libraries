@@ -10,9 +10,6 @@
 
 #include <adobe/config.hpp>
 
-#include <boost/range/begin.hpp>
-#include <boost/range/end.hpp>
-
 #include <algorithm>
 #include <functional>
 
@@ -92,7 +89,7 @@ template <typename I, // I models InputRange
           typename F>
 // F is a function type of the form O F()(value_type(I), O)
 O filter(I& source, O result, F op) {
-    return adobe::filter(boost::begin(source), boost::end(source), result, op);
+    return adobe::filter(std::begin(source), std::end(source), result, op);
 }
 
 /*!
@@ -105,7 +102,7 @@ template <typename I, // I models InputRange
           typename F>
 // F is a function type of the form O F()(value_type(I), O)
 O filter(const I& source, O result, F op) {
-    return adobe::filter(boost::begin(source), boost::end(source), result, op);
+    return adobe::filter(std::begin(source), std::end(source), result, op);
 }
 
 /*************************************************************************************************/

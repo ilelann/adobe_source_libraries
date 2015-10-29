@@ -10,9 +10,6 @@
 
 #include <adobe/config.hpp>
 
-#include <boost/range/begin.hpp>
-#include <boost/range/end.hpp>
-
 #include <algorithm>
 #include <functional>
 
@@ -36,7 +33,7 @@ namespace adobe {
 */
 template <class RandomAccessRange>
 inline void random_shuffle(RandomAccessRange& range) {
-    return std::random_shuffle(boost::begin(range), boost::end(range));
+    return std::random_shuffle(std::begin(range), std::end(range));
 }
 
 /*!
@@ -57,7 +54,7 @@ inline void random_shuffle(RandomAccessIterator first, RandomAccessIterator last
 */
 template <class RandomAccessRange, class RandomNumberGenerator>
 inline void random_shuffle(RandomAccessRange& range, RandomNumberGenerator& rand) {
-    return adobe::random_shuffle(boost::begin(range), boost::end(range), rand);
+    return adobe::random_shuffle(std::begin(range), std::end(range), rand);
 }
 
 /*************************************************************************************************/

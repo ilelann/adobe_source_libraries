@@ -259,11 +259,11 @@ private:
     typedef edge_iterator<cursor, adobe::forest_trailing_edge> postorder_iterator;
     typedef edge_iterator<cursor, adobe::forest_leading_edge> preorder_iterator;
 
-    std::pair<postorder_iterator, postorder_iterator> postorder_range() {
+    iterator_range<postorder_iterator> postorder_range() {
         return adobe::postorder_range(filter_fullorder_range(proxies_m, filter_visible()));
     }
 
-    std::pair<preorder_iterator, preorder_iterator> preorder_range() {
+    iterator_range<preorder_iterator> preorder_range() {
         return adobe::preorder_range(filter_fullorder_range(proxies_m, filter_visible()));
     }
 
@@ -323,7 +323,7 @@ eve_t::iterator eve_t::implementation_t::add_placeable(iterator parent,
     if (parent == iterator())
         parent = proxies_m.end();
 
-    parent = proxies_m.insert(reverse ? boost::next(adobe::leading_of(parent))
+    parent = proxies_m.insert(reverse ? std::next(adobe::leading_of(parent))
                                       : adobe::trailing_of(parent),
                               implementation::view_proxy_t(initial, placeable));
 
@@ -364,8 +364,8 @@ void eve_t::implementation_t::solve(slice_select_t select) {
         --limiter;
         progress = false;
 
-        for (preorder_iterator first(boost::begin(preorder_range())),
-             last(boost::end(preorder_range()));
+        for (preorder_iterator first(std::begin(preorder_range())),
+             last(std::end(preorder_range()));
              first != last; ++first) {
             progress |=
                 first->solve_down(::child_begin(first.base()), ::child_end(first.base()), select);
@@ -601,7 +601,7 @@ void view_proxy_t::adjust(::child_iterator first, ::child_iterator last, slice_s
 
                 guide_set = iter->geometry_m.extents_m.slice_m[select].guide_set_m;
 
-                adobe::transform(guide_set, boost::begin(guide_set),
+                adobe::transform(guide_set, std::begin(guide_set),
                                  boost::bind(std::minus<int>(),
                                              iter->geometry_m.extents_m.slice_m[select].length_m,
                                              _1));
@@ -697,7 +697,7 @@ void view_proxy_t::flatten(::child_iterator first, ::child_iterator last, slice_
     case layout_attributes_t::align_reverse:
     case layout_attributes_t::align_reverse_fill: {
         guide_set = container_guide_set_m[select][layout_attributes_t::align_reverse];
-        adobe::transform(guide_set, boost::begin(guide_set),
+        adobe::transform(guide_set, std::begin(guide_set),
                          boost::bind(std::minus<int>(), place_m.slice_m[select].length_m, _1));
         adobe::reverse(guide_set);
     } break;
@@ -1120,7 +1120,7 @@ void view_proxy_t::adjust_with(::child_iterator first, ::child_iterator last,
 
     std::fill(
         adobe::copy_bound(geometry.spacing_m, child_spacing_range).second,
-        boost::end(child_spacing_range), geometry_m.spacing_m.back());
+        std::end(child_spacing_range), geometry_m.spacing_m.back());
     */
 
     typedef layout_attributes_t::spacing_t::difference_type difference_type;
@@ -1336,7 +1336,7 @@ void view_proxy_t::solve_up_with(::child_iterator first, ::child_iterator last,
 
     if (gslice.balance_m && forward_guide_set.size() > 2) {
         guide_set_t::iterator iter(adobe::max_adjacent_difference(forward_guide_set));
-        guide_set_t::value_type difference(*boost::next(iter) - *iter);
+        guide_set_t::value_type difference(*std::next(iter) - *iter);
 
         guide_set_t::value_type accumulate(forward_guide_set.front());
 
@@ -1345,7 +1345,7 @@ void view_proxy_t::solve_up_with(::child_iterator first, ::child_iterator last,
         accumulate function object.
         */
 
-        for (guide_set_t::iterator first(boost::next(forward_guide_set.begin())),
+        for (guide_set_t::iterator first(std::next(forward_guide_set.begin())),
              last(forward_guide_set.end());
              first != last; ++first) {
             accumulate += difference;

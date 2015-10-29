@@ -14,10 +14,6 @@
 #include <functional>
 #include <vector>
 
-#include <boost/range/begin.hpp>
-#include <boost/range/end.hpp>
-#include <boost/range/value_type.hpp>
-#include <boost/range/size_type.hpp>
 #include <boost/range/size.hpp>
 
 #include <adobe/algorithm/other_of.hpp>
@@ -235,12 +231,12 @@ inline bool selection_includes(S1 s1_first, S1 s1_last, S2 s2_first, S2 s2_last,
 
         return std::equal(s2_first, s2_last, result.begin());
     } else if (s1_inside) {
-        return selection_includes(boost::next(s1_first), s1_last, s2_first, s2_last, comp,
+        return selection_includes(std::next(s1_first), s1_last, s2_first, s2_last, comp,
                                   !s1_inside, s2_inside);
     }
 
     // s2_inside == true
-    return selection_includes(s1_first, s1_last, boost::next(s2_first), s2_last, comp, s1_inside,
+    return selection_includes(s1_first, s1_last, std::next(s2_first), s2_last, comp, s1_inside,
                               !s2_inside);
 }
 
@@ -371,7 +367,7 @@ inline bool start_selected(const Selection& x) {
     \return the number of selection boundaries present in \c x.
 */
 template <typename Selection>
-inline typename boost::range_size<Selection>::type size(const Selection& x) {
+inline auto size(const Selection& x) {
     return x.size();
 }
 
@@ -395,12 +391,12 @@ typename boost::range_size<Selection>::type size(const Selection& x, const Forwa
     if (x.size() == 0)
         return boost::size(range);
 
-    selection_const_iterator s_iter(boost::begin(x));
-    selection_const_iterator s_last(boost::end(x));
+    selection_const_iterator s_iter(std::begin(x));
+    selection_const_iterator s_last(std::end(x));
 
-    range_const_iterator prev(boost::begin(range));
-    range_const_iterator iter(boost::next(prev, *s_iter));
-    range_const_iterator last(boost::end(range));
+    range_const_iterator prev(std::begin(range));
+    range_const_iterator iter(std::next(prev, *s_iter));
+    range_const_iterator last(std::end(range));
 
     selection_size_type result(0);
     bool inside(start_selected(x));
@@ -414,7 +410,7 @@ typename boost::range_size<Selection>::type size(const Selection& x, const Forwa
 
         prev = iter;
 
-        iter = ++s_iter == s_last ? last : boost::next(boost::begin(range), *s_iter);
+        iter = ++s_iter == s_last ? last : std::next(std::begin(range), *s_iter);
 
         inside = !inside;
     }
@@ -431,8 +427,8 @@ typename boost::range_size<Selection>::type size(const Selection& x, const Forwa
 template <typename Selection>
 bool is_selected(const Selection& x, typename Selection::value_type index) {
     typename boost::range_const_iterator<Selection>::type found(
-        std::upper_bound(boost::begin(x), boost::end(x), index));
-    typename boost::range_size<Selection>::type count(std::distance(boost::begin(x), found));
+        std::upper_bound(std::begin(x), std::end(x), index));
+    typename boost::range_size<Selection>::type count(std::distance(std::begin(x), found));
 
     return (count % 2 == 1) ^ start_selected(x);
 }
@@ -450,19 +446,20 @@ OutputIterator selection_copy(const Selection& x, const ForwardRange& range,
     typedef typename boost::range_const_iterator<Selection>::type selection_const_iterator;
     typedef typename boost::range_const_iterator<ForwardRange>::type range_const_iterator;
 
-    if (boost::size(range) == 0)
+    range_const_iterator iter(std::begin(range));
+    range_const_iterator last(std::end(range));
+
+    if (iter == last)
         return output;
 
     bool inside(start_selected(x));
 
-    selection_const_iterator s_iter(boost::begin(x));
-    selection_const_iterator s_last(boost::end(x));
+    selection_const_iterator s_iter(std::begin(x));
+    selection_const_iterator s_last(std::end(x));
 
-    range_const_iterator iter(boost::begin(range));
-    range_const_iterator last(boost::end(range));
 
     while (iter != last) {
-        if (s_iter != s_last && iter == boost::next(boost::begin(range), *s_iter)) {
+        if (s_iter != s_last && iter == std::next(std::begin(range), *s_iter)) {
             ++s_iter;
 
             inside = !inside;
@@ -488,24 +485,22 @@ template <typename Selection, typename ForwardRange, typename O1, // O1 models O
 // O2 models OutputIterator
 std::pair<O1, O2> selection_partition_copy(const Selection& selection, ForwardRange& range,
                                            O1 false_output, O2 true_output) {
-    typedef typename boost::range_const_iterator<Selection>::type selection_const_iterator;
-    typedef typename boost::range_iterator<ForwardRange>::type range_iterator;
+    auto first = std::begin(range);
+    auto last = std::end(range);
 
-    if (boost::size(range) == 0)
+    if (first == last)
         return std::make_pair(false_output, true_output);
 
-    selection_const_iterator selection_first(boost::begin(selection));
-    selection_const_iterator selection_last(boost::end(selection));
+    auto selection_first = std::begin(selection);
+    auto selection_last = std::end(selection);
 
-    range_iterator first(boost::begin(range));
-    range_iterator last(boost::end(range));
 
     bool inside(start_selected(selection));
 
     while (true) {
-        range_iterator copy_last(selection_first == selection_last
+        auto copy_last = selection_first == selection_last
                                      ? last
-                                     : boost::next(boost::begin(range), *selection_first));
+                                     : std::next(std::begin(range), *selection_first);
 
         // REVISIT (fbrereto) : It'd be nice to collapse the following into ? :
         //                      notation, but some compilers require that the
@@ -535,19 +530,16 @@ std::pair<O1, O2> selection_partition_copy(const Selection& selection, ForwardRa
 */
 template <typename Selection, typename ForwardRange, typename UnaryFunction>
 UnaryFunction selection_foreach(const Selection& x, const ForwardRange& range, UnaryFunction proc) {
-    typedef typename boost::range_const_iterator<Selection>::type selection_const_iterator;
-    typedef typename boost::range_const_iterator<ForwardRange>::type range_const_iterator;
-
     bool inside(start_selected(x));
 
-    selection_const_iterator s_iter(boost::begin(x));
-    selection_const_iterator s_last(boost::end(x));
+    auto s_iter = std::begin(x);
+    auto s_last = std::end(x);
 
-    range_const_iterator iter(boost::begin(range));
-    range_const_iterator last(boost::end(range));
+    auto iter = std::begin(range);
+    auto last = std::end(range);
 
     while (iter != last) {
-        if (s_iter != s_last && iter == boost::next(boost::begin(range), *s_iter)) {
+        if (s_iter != s_last && iter == std::next(std::begin(range), *s_iter)) {
             ++s_iter;
 
             inside = !inside;
@@ -577,10 +569,10 @@ selection_find_boundary(const Selection& selection, typename Selection::size_typ
     typedef typename boost::range_size<Selection>::type size_type;
     typedef std::pair<const_iterator, size_type> result_type;
 
-    const_iterator bound(std::lower_bound(boost::begin(selection), boost::end(selection), p));
+    const_iterator bound(std::lower_bound(std::begin(selection), std::end(selection), p));
 
     return result_type(bound,
-                       static_cast<size_type>(std::distance(boost::begin(selection), bound)));
+                       static_cast<size_type>(std::distance(std::begin(selection), bound)));
 }
 
 /****************************************************************************************************/
@@ -598,8 +590,8 @@ selection_find_boundary(const Selection& selection, typename Selection::size_typ
     typedef typename boost::range_size<Selection>::type size_type;
     typedef std::pair<const_iterator, size_type> result_type;
 
-    const_iterator iter(boost::begin(selection));
-    const_iterator last(boost::end(selection));
+    const_iterator iter(std::begin(selection));
+    const_iterator last(std::end(selection));
     size_type boundary_count(0);
 
     while (iter != last && *iter < p) {
@@ -639,7 +631,7 @@ selection_find_boundary(const Selection& selection, typename Selection::size_typ
     typedef typename iterator_category<const_iterator>::type iterator_category;
 
     if (boost::size(selection) == 0)
-        return result_type(boost::end(selection), 0);
+        return result_type(std::end(selection), 0);
 
     return selection_find_boundary(selection, p, iterator_category());
 }
@@ -687,13 +679,13 @@ RangeIterator selection_stable_partition(SelectionIterator selection_first,
         return boundary_count % 2 ? range_first : range_last;
 
     std::size_t half(n / 2);
-    SelectionIterator selection_middle(boost::next(selection_first, half));
-    RangeIterator range_middle(boost::next(first, *selection_middle));
+    SelectionIterator selection_middle(std::next(selection_first, half));
+    RangeIterator range_middle(std::next(first, *selection_middle));
 
     RangeIterator i(selection_stable_partition(selection_first, selection_middle, first,
                                                range_first, range_middle, boundary_count));
 
-    RangeIterator j(selection_stable_partition(boost::next(selection_middle), selection_last, first,
+    RangeIterator j(selection_stable_partition(std::next(selection_middle), selection_last, first,
                                                range_middle, range_last,
                                                boundary_count + half + 1));
 
@@ -709,8 +701,8 @@ RangeIterator selection_stable_partition(SelectionIterator selection_first,
 template <typename Selection, typename ForwardRange>
 inline typename boost::range_iterator<ForwardRange>::type
 selection_stable_partition(const Selection& selection, ForwardRange& range) {
-    return selection_stable_partition(boost::begin(selection), boost::end(selection),
-                                      boost::begin(range), boost::begin(range), boost::end(range),
+    return selection_stable_partition(std::begin(selection), std::end(selection),
+                                      std::begin(range), std::begin(range), std::end(range),
                                       start_selected(selection));
 }
 
@@ -763,14 +755,14 @@ selection_stable_partition_about(const Selection& selection, ForwardRange& range
     std::pair<selection_const_iterator, size_type> selection_split =
         adobe::selection_find_boundary(selection, p);
 
-    range_iterator first(boost::begin(range));
-    range_iterator range_p(boost::next(first, p));
-    range_iterator last(boost::end(range));
+    range_iterator first(std::begin(range));
+    range_iterator range_p(std::next(first, p));
+    range_iterator last(std::end(range));
 
-    range_iterator i(selection_stable_partition(boost::begin(selection), selection_split.first,
+    range_iterator i(selection_stable_partition(std::begin(selection), selection_split.first,
                                                 first, first, range_p, prior_boundary_count));
 
-    range_iterator j(selection_stable_partition(selection_split.first, boost::end(selection), first,
+    range_iterator j(selection_stable_partition(selection_split.first, std::end(selection), first,
                                                 range_p, last, selection_split.second + 1));
 
     return std::pair<range_iterator, range_iterator>(i, j);
@@ -791,8 +783,8 @@ Selection index_set_to_selection(const ForwardRange& index_set) {
 
     typedef typename boost::range_const_iterator<ForwardRange>::type range_const_iterator;
 
-    range_const_iterator iter(boost::begin(index_set));
-    range_const_iterator last(boost::end(index_set));
+    range_const_iterator iter(std::begin(index_set));
+    range_const_iterator last(std::end(index_set));
 
     for (; iter != last; ++iter) {
         Selection tmp;
@@ -821,8 +813,8 @@ OutputIterator selection_to_index_set(const Selection& selection,
 
     bool selected(start_selected(selection));
     std::size_t index(0);
-    selection_const_iterator iter(boost::begin(selection));
-    selection_const_iterator last(boost::end(selection));
+    selection_const_iterator iter(std::begin(selection));
+    selection_const_iterator last(std::end(selection));
 
     while (iter != last) {
         while (index != *iter && index != max_index) {

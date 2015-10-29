@@ -136,15 +136,14 @@ namespace {
 /****************************************************************************************************/
 
 long to_long(const adobe::token_range_t& value) {
-    const std::string value_string(value.first, value.second);
-
+    const std::string value_string(std::begin(value), std::end(value));
     return boost::lexical_cast<long>(value_string);
 }
 
 long calculate_expression(const adobe::token_range_t& content) {
     std::vector<long> value_stack;
 
-    adobe::make_xml_parser(content.first, content.second, adobe::line_position_t("expression"),
+    adobe::make_xml_parser(std::begin(content), std::end(content), adobe::line_position_t("expression"),
                            adobe::always_true<adobe::token_range_t>(),
                            boost::bind(expression_content, _1, _2, _3, _4, boost::ref(value_stack)),
                            adobe::implementation::null_output_t()).parse_content();
@@ -163,7 +162,7 @@ adobe::token_range_t document_content(const adobe::token_range_t& /*entire_eleme
     if (adobe::token_range_equal(name, math_test_token_k)) {
         math_test_t test;
 
-        adobe::make_xml_parser(value.first, value.second, adobe::line_position_t("math-test"),
+        adobe::make_xml_parser(std::begin(value), std::end(value), adobe::line_position_t("math-test"),
                                adobe::always_true<adobe::token_range_t>(),
                                boost::bind(test_content, _1, _2, _3, _4, boost::ref(test)),
                                adobe::implementation::null_output_t()).parse_content();
@@ -245,7 +244,7 @@ adobe::token_range_t expression_content(const adobe::token_range_t& /*entire_ele
 bool run_test(const adobe::token_range_t& document, const adobe::line_position_t& line_position) {
     bool passed = false;
 
-    adobe::make_xml_parser(document.first, document.second, line_position,
+    adobe::make_xml_parser(std::begin(document), std::end(document), line_position,
                            adobe::always_true<adobe::token_range_t>(),
                            boost::bind(document_content, _1, _2, _3, _4, boost::ref(passed)),
                            adobe::implementation::null_output_t()).parse_document();

@@ -10,9 +10,6 @@
 
 #include <adobe/config.hpp>
 
-#include <boost/range/begin.hpp>
-#include <boost/range/end.hpp>
-
 #include <algorithm>
 #include <functional>
 
@@ -43,9 +40,9 @@ namespace adobe {
     \brief mismatch implementation
 */
 template <class InputRange1, class InputIterator2>
-inline std::pair<typename boost::range_iterator<InputRange1>::type, InputIterator2>
+inline auto
 mismatch(InputRange1& range1, InputIterator2 first2) {
-    return std::mismatch(boost::begin(range1), boost::end(range1), first2);
+    return std::mismatch(std::begin(range1), std::end(range1), first2);
 }
 
 
@@ -55,9 +52,9 @@ mismatch(InputRange1& range1, InputIterator2 first2) {
     \brief mismatch implementation
 */
 template <class InputRange1, class InputIterator2>
-inline std::pair<typename boost::range_const_iterator<InputRange1>::type, InputIterator2>
+inline auto
 mismatch(const InputRange1& range1, InputIterator2 first2) {
-    return std::mismatch(boost::begin(range1), boost::end(range1), first2);
+    return std::mismatch(std::begin(range1), std::end(range1), first2);
 }
 
 /*!
@@ -77,9 +74,9 @@ mismatch(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, Bin
     \brief mismatch implementation
 */
 template <class InputRange1, class InputIterator2, class BinaryPredicate>
-inline std::pair<typename boost::range_iterator<InputRange1>::type, InputIterator2>
+inline auto
 mismatch(InputRange1& range1, InputIterator2 first2, BinaryPredicate pred) {
-    return adobe::mismatch(boost::begin(range1), boost::end(range1), first2, pred);
+    return adobe::mismatch(std::begin(range1), std::end(range1), first2, pred);
 }
 
 /*!
@@ -88,9 +85,9 @@ mismatch(InputRange1& range1, InputIterator2 first2, BinaryPredicate pred) {
     \brief mismatch implementation
 */
 template <class InputRange1, class InputIterator2, class BinaryPredicate>
-inline std::pair<typename boost::range_const_iterator<InputRange1>::type, InputIterator2>
+inline auto
 mismatch(const InputRange1& range1, InputIterator2 first2, BinaryPredicate pred) {
-    return adobe::mismatch(boost::begin(range1), boost::end(range1), first2, pred);
+    return adobe::mismatch(std::begin(range1), std::end(range1), first2, pred);
 }
 
 /*************************************************************************************************/

@@ -10,9 +10,6 @@
 
 #include <adobe/config.hpp>
 
-#include <boost/range/begin.hpp>
-#include <boost/range/end.hpp>
-
 #include <algorithm>
 #include <functional>
 
@@ -40,8 +37,8 @@ namespace adobe {
 */
 template <class InputRange1, class InputRange2>
 inline bool includes(const InputRange1& range1, const InputRange2& range2) {
-    return std::includes(boost::begin(range1), boost::end(range1), boost::begin(range2),
-                         boost::end(range2));
+    return std::includes(std::begin(range1), std::end(range1), std::begin(range2),
+                         std::end(range2));
 }
 
 /*!
@@ -62,8 +59,8 @@ inline bool includes(InputIterator1 first1, InputIterator1 last1, InputIterator2
 */
 template <class InputRange1, class InputRange2, class Compare>
 inline bool includes(const InputRange1& range1, const InputRange2& range2, Compare comp) {
-    return adobe::includes(boost::begin(range1), boost::end(range1), boost::begin(range2),
-                           boost::end(range2), comp);
+    return adobe::includes(std::begin(range1), std::end(range1), std::begin(range2),
+                           std::end(range2), comp);
 }
 
 /*!
@@ -74,8 +71,8 @@ inline bool includes(const InputRange1& range1, const InputRange2& range2, Compa
 template <class InputRange1, class InputRange2, class OutputIterator>
 inline OutputIterator set_union(const InputRange1& range1, const InputRange2& range2,
                                 OutputIterator result) {
-    return std::set_union(boost::begin(range1), boost::end(range1), boost::begin(range2),
-                          boost::end(range2), result);
+    return std::set_union(std::begin(range1), std::end(range1), std::begin(range2),
+                          std::end(range2), result);
 }
 
 /*!
@@ -97,8 +94,8 @@ inline OutputIterator set_union(InputIterator1 first1, InputIterator1 last1, Inp
 template <class InputRange1, class InputRange2, class OutputIterator, class Compare>
 inline OutputIterator set_union(const InputRange1& range1, const InputRange2& range2,
                                 OutputIterator result, Compare comp) {
-    return adobe::set_union(boost::begin(range1), boost::end(range1), boost::begin(range2),
-                            boost::end(range2), result, comp);
+    return adobe::set_union(std::begin(range1), std::end(range1), std::begin(range2),
+                            std::end(range2), result, comp);
 }
 
 /*!
@@ -109,8 +106,8 @@ inline OutputIterator set_union(const InputRange1& range1, const InputRange2& ra
 template <class InputRange1, class InputRange2, class OutputIterator>
 inline OutputIterator set_intersection(const InputRange1& range1, const InputRange2& range2,
                                        OutputIterator result) {
-    return std::set_intersection(boost::begin(range1), boost::end(range1), boost::begin(range2),
-                                 boost::end(range2), result);
+    return std::set_intersection(std::begin(range1), std::end(range1), std::begin(range2),
+                                 std::end(range2), result);
 }
 
 /*!
@@ -133,8 +130,8 @@ inline OutputIterator set_intersection(InputIterator1 first1, InputIterator1 las
 template <class InputRange1, class InputRange2, class OutputIterator, class Compare>
 inline OutputIterator set_intersection(const InputRange1& range1, const InputRange2& range2,
                                        OutputIterator result, Compare comp) {
-    return adobe::set_intersection(boost::begin(range1), boost::end(range1), boost::begin(range2),
-                                   boost::end(range2), result, comp);
+    return adobe::set_intersection(std::begin(range1), std::end(range1), std::begin(range2),
+                                   std::end(range2), result, comp);
 }
 
 /*!
@@ -145,8 +142,8 @@ inline OutputIterator set_intersection(const InputRange1& range1, const InputRan
 template <class InputRange1, class InputRange2, class OutputIterator>
 inline OutputIterator set_difference(const InputRange1& range1, const InputRange2& range2,
                                      OutputIterator result) {
-    return std::set_difference(boost::begin(range1), boost::end(range1), boost::begin(range2),
-                               boost::end(range2), result);
+    return std::set_difference(std::begin(range1), std::end(range1), std::begin(range2),
+                               std::end(range2), result);
 }
 
 /*!
@@ -169,8 +166,8 @@ inline OutputIterator set_difference(InputIterator1 first1, InputIterator1 last1
 template <class InputRange1, class InputRange2, class OutputIterator, class Compare>
 inline OutputIterator set_difference(const InputRange1& range1, const InputRange2& range2,
                                      OutputIterator result, Compare comp) {
-    return adobe::set_difference(boost::begin(range1), boost::end(range1), boost::begin(range2),
-                                 boost::end(range2), result, comp);
+    return adobe::set_difference(std::begin(range1), std::end(range1), std::begin(range2),
+                                 std::end(range2), result, comp);
 }
 
 /*!
@@ -181,8 +178,8 @@ inline OutputIterator set_difference(const InputRange1& range1, const InputRange
 template <class InputRange1, class InputRange2, class OutputIterator>
 inline OutputIterator set_symmetric_difference(const InputRange1& range1, const InputRange2& range2,
                                                OutputIterator result) {
-    return std::set_symmetric_difference(boost::begin(range1), boost::end(range1),
-                                         boost::begin(range2), boost::end(range2), result);
+    return std::set_symmetric_difference(std::begin(range1), std::end(range1),
+                                         std::begin(range2), std::end(range2), result);
 }
 
 /*!
@@ -206,8 +203,8 @@ inline OutputIterator set_symmetric_difference(InputIterator1 first1, InputItera
 template <class InputRange1, class InputRange2, class OutputIterator, class Compare>
 inline OutputIterator set_symmetric_difference(const InputRange1& range1, const InputRange2& range2,
                                                OutputIterator result, Compare comp) {
-    return adobe::set_symmetric_difference(boost::begin(range1), boost::end(range1),
-                                           boost::begin(range2), boost::end(range2), result, comp);
+    return adobe::set_symmetric_difference(std::begin(range1), std::end(range1),
+                                           std::begin(range2), std::end(range2), result, comp);
 }
 
 /*************************************************************************************************/

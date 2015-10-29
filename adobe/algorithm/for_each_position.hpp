@@ -10,9 +10,6 @@
 
 #include <adobe/config.hpp>
 
-#include <boost/range/begin.hpp>
-#include <boost/range/end.hpp>
-
 #include <algorithm>
 #include <functional>
 
@@ -68,7 +65,7 @@ inline void for_each_position(InputIterator first, InputIterator last, UnaryFunc
 */
 template <class InputRange, class UnaryFunction>
 inline void for_each_position(InputRange& range, UnaryFunction f) {
-    adobe::for_each_position(boost::begin(range), boost::end(range), f);
+    adobe::for_each_position(std::begin(range), std::end(range), f);
 }
 
 /*!
@@ -78,7 +75,7 @@ inline void for_each_position(InputRange& range, UnaryFunction f) {
 */
 template <class InputRange, class UnaryFunction>
 inline void for_each_position(const InputRange& range, UnaryFunction f) {
-    adobe::for_each_position(boost::begin(range), boost::end(range), f);
+    adobe::for_each_position(std::begin(range), std::end(range), f);
 }
 
 /*************************************************************************************************/

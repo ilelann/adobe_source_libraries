@@ -67,7 +67,7 @@ bool keyword_lookup(const adobe::name_t& name) {
 #endif
 
     return binary_search(keyword_table, name, adobe::less(), constructor<name_t>()) !=
-           boost::end(keyword_table);
+           std::end(keyword_table);
 }
 
 /*************************************************************************************************/

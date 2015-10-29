@@ -10,9 +10,6 @@
 
 #include <adobe/config.hpp>
 
-#include <boost/range/begin.hpp>
-#include <boost/range/end.hpp>
-
 #include <algorithm>
 
 /*************************************************************************************************/
@@ -35,7 +32,7 @@ namespace adobe {
 */
 template <class ForwardRange, class T>
 inline void fill(ForwardRange& range, const T& value) {
-    std::fill(boost::begin(range), boost::end(range), value);
+    std::fill(std::begin(range), std::end(range), value);
 }
 
 /*************************************************************************************************/

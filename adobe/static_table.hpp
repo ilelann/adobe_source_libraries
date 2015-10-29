@@ -232,7 +232,7 @@ struct static_table {
     const value_type& operator()(const key_type& key) const {
         const entry_type* iter(adobe::lower_bound(table_m, key, traits_type()));
 
-        if (iter == boost::end(table_m) || !traits_type().equal(iter->first, key))
+        if (iter == std::end(table_m) || !traits_type().equal(iter->first, key))
             throw std::logic_error("static_table key not found");
 
         return iter->second;
@@ -241,7 +241,7 @@ struct static_table {
     bool operator()(const key_type& key, value_type& result) const {
         const entry_type* iter(adobe::lower_bound(table_m, key, traits_type()));
 
-        if (iter == boost::end(table_m) || !traits_type().equal(iter->first, key))
+        if (iter == std::end(table_m) || !traits_type().equal(iter->first, key))
             return false;
 
         result = iter->second;

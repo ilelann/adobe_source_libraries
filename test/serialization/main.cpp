@@ -36,7 +36,7 @@ int main() {
     test["bool"_name] = any_regular_t(true);
     test["dictionary_empty"_name] = any_regular_t(dictionary_t());
     test["dictionary_one"_name] =
-        any_regular_t(dictionary_t(&one_dict_value, boost::next(&one_dict_value)));
+        any_regular_t(dictionary_t(&one_dict_value, std::next(&one_dict_value)));
     test["double"_name] = any_regular_t(3.14159265);
     test["empty"_name] = any_regular_t(empty_t());
     test["integer"_name] = any_regular_t(42);

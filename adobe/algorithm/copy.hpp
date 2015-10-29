@@ -10,10 +10,6 @@
 
 #include <adobe/config.hpp>
 
-#include <boost/range/begin.hpp>
-#include <boost/range/end.hpp>
-#include <boost/range/size.hpp>
-
 #include <algorithm>
 #include <iterator>
 
@@ -40,7 +36,7 @@ namespace adobe {
 */
 template <class InputRange, class OutputIterator>
 inline OutputIterator copy(const InputRange& range, OutputIterator result) {
-    return std::copy(boost::begin(range), boost::end(range), result);
+    return std::copy(std::begin(range), std::end(range), result);
 }
 
 /*!
@@ -51,7 +47,7 @@ inline OutputIterator copy(const InputRange& range, OutputIterator result) {
 template <class BidirectionalRange1, class BidirectionalIterator2>
 inline BidirectionalIterator2 copy_backward(BidirectionalRange1& range1,
                                             BidirectionalIterator2 result) {
-    return std::copy_backward(boost::begin(range1), boost::end(range1), result);
+    return std::copy_backward(std::begin(range1), std::end(range1), result);
 }
 
 /*!
@@ -62,7 +58,7 @@ inline BidirectionalIterator2 copy_backward(BidirectionalRange1& range1,
 template <class BidirectionalRange1, class BidirectionalIterator2>
 inline BidirectionalIterator2 copy_backward(const BidirectionalRange1& range1,
                                             BidirectionalIterator2 result) {
-    return std::copy_backward(boost::begin(range1), boost::end(range1), result);
+    return std::copy_backward(std::begin(range1), std::end(range1), result);
 }
 
 /*************************************************************************************************/

@@ -701,7 +701,7 @@ typename std::pair<boost::transform_iterator<UnaryFunction, Iterator>,
 template <class InputRange, class T, class BinaryOperation>
 T accumulate(const InputRange& range, T init, BinaryOperation binary_op)
 {
-    return std::accumulate(boost::begin(range), boost::end(range), init, binary_op);
+    return std::accumulate(std::begin(range), std::end(range), init, binary_op);
 }
 #endif
 

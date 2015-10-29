@@ -12,11 +12,6 @@
 
 #include <functional>
 
-#include <boost/range/begin.hpp>
-#include <boost/range/const_iterator.hpp>
-#include <boost/range/end.hpp>
-#include <boost/range/iterator.hpp>
-
 #include <adobe/algorithm/lower_bound.hpp>
 #include <adobe/functional/operator.hpp>
 
@@ -121,24 +116,23 @@ inline I binary_search(I f, I l, const T& x) {
 }
 
 template <typename I, typename T>
-inline typename boost::range_iterator<I>::type binary_search(I& range, const T& x) {
-    return adobe::binary_search(boost::begin(range), boost::end(range), x);
+inline auto binary_search(I& range, const T& x) {
+    return adobe::binary_search(std::begin(range), std::end(range), x);
 }
 
 template <typename I, typename T>
-inline typename boost::range_const_iterator<I>::type binary_search(const I& range, const T& x) {
-    return adobe::binary_search(boost::begin(range), boost::end(range), x);
+inline auto binary_search(const I& range, const T& x) {
+    return adobe::binary_search(std::begin(range), std::end(range), x);
 }
 
 template <typename I, typename T, typename C>
-inline typename boost::range_iterator<I>::type binary_search(I& range, const T& x, C c) {
-    return adobe::binary_search(boost::begin(range), boost::end(range), x, c);
+inline auto binary_search(I& range, const T& x, C c) {
+    return adobe::binary_search(std::begin(range), std::end(range), x, c);
 }
 
 template <typename I, typename T, typename C>
-inline typename boost::range_const_iterator<I>::type binary_search(const I& range, const T& x,
-                                                                   C c) {
-    return adobe::binary_search(boost::begin(range), boost::end(range), x, c);
+inline auto binary_search(const I& range, const T& x, C c) {
+    return adobe::binary_search(std::begin(range), std::end(range), x, c);
 }
 
 /*************************************************************************************************/
@@ -147,20 +141,20 @@ template <typename I, // I models ForwardRange
           typename T, // T == result_type(P)
           typename C, // C models StrictWeakOrdering(T, T)
           typename P> // P models UnaryFunction(value_type(I)) -> T
-inline typename boost::lazy_disable_if<boost::is_same<I, T>, boost::range_iterator<I>>::type
-binary_search(I& r, const T& x, C c, P p) {
-    return adobe::binary_search(boost::begin(r), boost::end(r), x, c, p);
+inline auto
+binary_search(I& r, const T& x, C c, P p, std::enable_if_t<!std::is_same<I, T>::value>* = 0) {
+    return adobe::binary_search(std::begin(r), std::end(r), x, c, p);
 }
 
-/*************************************************************************************************/
+///*************************************************************************************************/
 
 template <typename I, // I models ForwardRange
           typename T, // T == result_type(P)
           typename C, // C models StrictWeakOrdering(T, T)
           typename P> // P models UnaryFunction(value_type(I)) -> T
-inline typename boost::lazy_disable_if<boost::is_same<I, T>, boost::range_const_iterator<I>>::type
-binary_search(const I& r, const T& x, C c, P p) {
-    return adobe::binary_search(boost::begin(r), boost::end(r), x, c, p);
+inline auto
+binary_search(const I& r, const T& x, C c, P p, std::enable_if_t<!std::is_same<I, T>::value>* = 0) {
+    return adobe::binary_search(std::begin(r), std::end(r), x, c, p);
 }
 
 /*!

@@ -14,10 +14,6 @@
 
 #include <algorithm>
 
-#include <boost/range/begin.hpp>
-#include <boost/range/end.hpp>
-
-
 /*************************************************************************************************/
 
 namespace adobe {
@@ -50,7 +46,7 @@ inline void for_each(InputIterator first, InputIterator last, UnaryFunction f) {
 */
 template <class InputRange, class UnaryFunction>
 inline void for_each(InputRange& range, UnaryFunction f) {
-    adobe::for_each(boost::begin(range), boost::end(range), f);
+    adobe::for_each(std::begin(range), std::end(range), f);
 }
 
 /*!
@@ -60,7 +56,7 @@ inline void for_each(InputRange& range, UnaryFunction f) {
 */
 template <class InputRange, class UnaryFunction>
 inline void for_each(const InputRange& range, UnaryFunction f) {
-    adobe::for_each(boost::begin(range), boost::end(range), f);
+    adobe::for_each(std::begin(range), std::end(range), f);
 }
 
 /*************************************************************************************************/

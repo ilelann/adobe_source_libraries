@@ -27,8 +27,8 @@ BOOST_AUTO_TEST_CASE(lower_bound_test) {
     using adobe::lower_bound;
     using adobe::lower_bound_n;
     using adobe::aggregate_pair;
-    using boost::begin;
-    using boost::end;
+    using std::begin;
+    using std::end;
     using boost::size;
 
     aggregate_pair<int> a[] = {{0, 0}, {0, 1}, {1, 2}, {1, 3}, {3, 4}, {3, 5}};

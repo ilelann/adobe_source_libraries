@@ -92,7 +92,7 @@ struct context_frame_t {
     typedef std::multimap<token_range_t, element_t, comp_t> store_t;
     typedef store_t::iterator store_iterator;
     typedef store_t::value_type store_value_type;
-    typedef std::pair<store_iterator, store_iterator> store_range_pair_t;
+    typedef iterator_range<store_iterator> store_range_pair_t;
 
     typedef xml_parser_t<char*>::callback_proc_t callback_proc_t;
     typedef xml_parser_t<char*>::preorder_predicate_t preorder_predicate_t;
@@ -121,12 +121,13 @@ struct context_frame_t {
     }
 
     ~context_frame_t() {
-        if (slurp_m.first)
-            delete[] slurp_m.first;
+        if (std::begin(slurp_m))
+            delete[] std::begin(slurp_m);
     }
 
     inline store_range_pair_t range_for_key(const store_t::key_type& key) {
-        return glossary_m.equal_range(key);
+        auto it_pair = glossary_m.equal_range(key);
+        return {it_pair.first, it_pair.second};
     }
 
     std::pair<bool, store_iterator> exact_match_exists(const attribute_set_t& attribute_set,
@@ -263,8 +264,7 @@ struct xstring_context_t : boost::noncopyable {
     {
         implementation::context_frame_t& context(implementation::top_frame());
 
-        context.slurp_m.first = reinterpret_cast<uchar_ptr_t>(parse_first);
-        context.slurp_m.second = reinterpret_cast<uchar_ptr_t>(parse_last);
+        context.slurp_m = token_range_t {reinterpret_cast<uchar_ptr_t>(parse_first), reinterpret_cast<uchar_ptr_t>(parse_last)};
         context.parse_info_m = parse_info;
         context.parsed_m = false;
 
@@ -287,8 +287,7 @@ struct xstring_context_t : boost::noncopyable {
         implementation::context_frame_t& context(implementation::top_frame());
 
         context.attribute_set_m.insert(first_attribute, last_attribute);
-        context.slurp_m.first = parse_first;
-        context.slurp_m.second = parse_last;
+        context.slurp_m = token_range_t {parse_first, parse_last};
         context.parse_info_m = parse_info;
         context.parsed_m = false;
 
@@ -312,7 +311,7 @@ private:
         if (context.parsed_m || !boost::size(context.slurp_m))
             return;
 
-        make_xml_parser(context.slurp_m.first, context.slurp_m.second, context.parse_info_m,
+        make_xml_parser(std::begin(context.slurp_m), std::end(context.slurp_m), context.parse_info_m,
                         implementation::xstring_preorder_predicate, &implementation::xml_xstr_store,
                         implementation::null_output_t())
             .parse_element_sequence(); // REVISIT (fbrereto) : More or less legible than having it

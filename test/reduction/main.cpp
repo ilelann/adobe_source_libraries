@@ -11,8 +11,6 @@
 #include <adobe/algorithm/other_of.hpp>
 #include <adobe/iterator/value_iterator.hpp>
 
-#include <boost/next_prior.hpp>
-
 #include <utility>
 #include <vector>
 #include <iostream>
@@ -102,7 +100,7 @@ struct partition_trivial : std::unary_function<I, std::pair<I, I>> {
         if (p(*i))
             return std::make_pair(i, i);
         else
-            return std::make_pair(i, boost::next(i));
+            return std::make_pair(i, std::next(i));
     }
 };
 

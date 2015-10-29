@@ -6,7 +6,7 @@ enable_testing()
 project(adobe_source_libraries CXX)
 
 set(CMAKE_CXX_EXTENSIONS OFF)
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LANGUAGE_STANDARD "c++0x")
 set(CMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LIBRARY "libc++")
 
@@ -45,7 +45,6 @@ if (${USE_STLAB_DOUBLECONV})
   target_include_directories(double-conversion PUBLIC $<BUILD_INTERFACE:${root_path}>)
 else()
   setup_dep(URL https://github.com/google/double-conversion.git BRANCH master)
-  target_include_directories(double-conversion PUBLIC $<BUILD_INTERFACE:${root_path}/double-conversion>)
   # poorly named flag to fix include path
   target_compile_definitions(double-conversion PUBLIC ADOBE_BUILT_WITH_CMAKE)
 endif()

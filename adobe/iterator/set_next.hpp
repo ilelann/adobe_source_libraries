@@ -10,7 +10,7 @@
 
 #include <adobe/config.hpp>
 
-#include <boost/next_prior.hpp>
+#include <iterator>
 
 /*************************************************************************************************/
 
@@ -56,19 +56,19 @@ inline void set_next(I x, I y) {
 
 template <typename I> // T models ForwardNodeIterator
 inline void splice_node_range(I location, I first, I last) {
-    I successor(boost::next(location));
+    I successor(std::next(location));
     set_next(location, first);
     set_next(last, successor);
 }
 
 template <typename I> // I models ForwardNodeIterator
 inline void skip_next_node(I location) {
-    set_next(location, boost::next(boost::next(location)));
+    set_next(location, std::next(std::next(location)));
 }
 
 template <typename I> // I models BidirectionalNodeIterator
 inline void skip_node(I location) {
-    set_next(boost::prior(location), boost::next(location));
+    set_next(std::prev(location), std::next(location));
 }
 
 //!@}
