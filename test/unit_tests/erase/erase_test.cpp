@@ -24,8 +24,6 @@
 
 
 #include <boost/bind.hpp>
-#include <boost/range/begin.hpp>
-#include <boost/range/end.hpp>
 #include <boost/range/size.hpp>
 #include <boost/test/utils/nullstream.hpp>
 

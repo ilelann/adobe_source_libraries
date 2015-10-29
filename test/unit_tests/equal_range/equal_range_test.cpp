@@ -13,8 +13,6 @@
 #define BOOST_TEST_MAIN
 #include <boost/test/unit_test.hpp>
 
-#include <boost/range/begin.hpp>
-#include <boost/range/end.hpp>
 #include <boost/range/size.hpp>
 #include <adobe/functional.hpp>
 #include <adobe/algorithm/equal_range.hpp>

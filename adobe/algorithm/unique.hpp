@@ -33,7 +33,7 @@ namespace adobe {
     \brief unique implementation
 */
 template <class ForwardRange>
-inline typename boost::range_iterator<ForwardRange>::type unique(ForwardRange& range) {
+inline auto unique(ForwardRange& range) {
     return std::unique(std::begin(range), std::end(range));
 }
 
@@ -53,8 +53,7 @@ inline ForwardIterator unique(ForwardIterator first, ForwardIterator last, Binar
     \brief unique implementation
 */
 template <class ForwardRange, class BinaryPredicate>
-inline typename boost::range_iterator<ForwardRange>::type unique(ForwardRange& range,
-                                                                 BinaryPredicate pred) {
+inline auto unique(ForwardRange& range, BinaryPredicate pred) {
     return adobe::unique(std::begin(range), std::end(range), pred);
 }
 

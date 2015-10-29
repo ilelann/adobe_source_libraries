@@ -14,10 +14,9 @@
 
 template <typename R> // R is a depth adaptor range
 void output(const R& f) {
-    typedef typename boost::range_iterator<R>::type iterator;
 
-    for (iterator first(std::begin(f)), last(std::end(f)); first != last; ++first) {
-        for (typename iterator::difference_type i(first.depth()); i != 0; --i) {
+    for (auto first = std::begin(f), last = std::end(f); first != last; ++first) {
+        for (auto i = first.depth(); i != 0; --i) {
             std::cout << "\t";
         }
         if (first.edge() == adobe::forest_leading_edge) {
