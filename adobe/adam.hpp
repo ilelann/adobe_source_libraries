@@ -13,7 +13,7 @@
 #include <functional>
 #include <vector>
 
-#include <boost/function.hpp>
+#include <adobe/function.hpp>
 
 #ifdef __MWERKS__
 #pragma warn_unusedarg off
@@ -68,10 +68,10 @@ class sheet_t : boost::noncopyable {
 public:
     struct relation_t;
 
-    typedef boost::function<void(bool)> monitor_invariant_t;
-    typedef boost::function<void(const any_regular_t&)> monitor_value_t;
-    typedef boost::function<void(const dictionary_t&)> monitor_contributing_t;
-    typedef boost::function<void(bool)> monitor_enabled_t;
+    typedef function<void(bool)> monitor_invariant_t;
+    typedef function<void(const any_regular_t&)> monitor_value_t;
+    typedef function<void(const dictionary_t&)> monitor_contributing_t;
+    typedef function<void(bool)> monitor_enabled_t;
 
     /*!
 

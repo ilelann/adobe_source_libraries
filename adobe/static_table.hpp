@@ -41,7 +41,7 @@ sorted will have undefined results.
 
 \example
 \code
-    typdef adobe::static_table<adobe::name_t, boost::function<void (int)>, 4> table_t;
+    typdef adobe::static_table<adobe::name_t, function<void (int)>, 4> table_t;
 
     static table_t some_table_s =
     {{

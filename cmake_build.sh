@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 BUILDDIR=${BUILDDIR:-build}
 TOOLSET=${TOOLSET:-clang++}

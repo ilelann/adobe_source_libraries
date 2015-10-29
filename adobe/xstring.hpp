@@ -20,7 +20,7 @@
 #include <adobe/unicode.hpp>
 #include <adobe/xml_parser.hpp>
 
-#include <boost/function.hpp>
+#include <adobe/function.hpp>
 #include <boost/noncopyable.hpp>
 #include <boost/bind.hpp>
 
@@ -121,8 +121,7 @@ struct context_frame_t {
     }
 
     ~context_frame_t() {
-        if (std::begin(slurp_m))
-            delete[] std::begin(slurp_m);
+        delete[] std::begin(slurp_m);
     }
 
     inline store_range_pair_t range_for_key(const store_t::key_type& key) {

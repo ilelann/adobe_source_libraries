@@ -33,7 +33,7 @@
 #include <adobe/type_inspection.hpp> // ADOBE_HAS_TYPE/ADOBE_HAS_MEMBER
 
 
-// forward declare boost::function so we can specialize against it
+// forward declare function so we can specialize against it
 namespace boost {
 template <typename F>
 class function;
@@ -201,16 +201,16 @@ R get_next_arg(ArgStream const* as) {
 \template_parameters F must model callable_object(?)
 */
 
-// for some reason boost::function_types does not handle boost::functions,
-// nor does boost::function have a function::signature typedef,
+// for some reason function_types does not handle functions,
+// nor does function have a function::signature typedef,
 // so in order to support boost, we use this signature<F>::type mechanism:
 template <typename F>
 struct signature {
     typedef F type;
 };
-// specialize for boost::function
+// specialize for function
 template <typename F>
-struct signature<boost::function<F>> {
+struct signature<function<F>> {
     typedef F type;
 };
 
@@ -224,7 +224,7 @@ struct signature<boost::function<F>> {
 */
 template <typename F>
 struct result_type {
-    typedef typename boost::function_types::result_type<typename signature<F>::type>::type type;
+    typedef typename function_types::result_type<typename signature<F>::type>::type type;
 };
 
 namespace detail {
@@ -235,7 +235,7 @@ template <typename T>
 struct remove_cv_ref : boost::remove_cv<typename boost::remove_reference<T>::type> {};
 
 
-// see also boost::function_types 'interpreter' example
+// see also function_types 'interpreter' example
 // we convert the function signature into a mpl sequence (it *is* an mpl sequence, since it
 // implements mpl::begin/end/etc)
 // we recursively push the args onto a fusion sequence, calling get_next_arg as we go.
@@ -244,9 +244,9 @@ struct remove_cv_ref : boost::remove_cv<typename boost::remove_reference<T>::typ
 // and then luckily fusion has a magic invoke function we can use
 template <typename F,
           class From = typename boost::mpl::begin<
-              boost::function_types::parameter_types<typename signature<F>::type>>::type,
+              function_types::parameter_types<typename signature<F>::type>>::type,
           class To = typename boost::mpl::end<
-              boost::function_types::parameter_types<typename signature<F>::type>>::type>
+              function_types::parameter_types<typename signature<F>::type>>::type>
 struct invoker {
     // add an argument to a Fusion cons-list for each parameter type
     template <typename Args, typename ArgStream>
@@ -299,10 +299,10 @@ typename result_type<F>::type call(T* that, F f, ArgStream& astream) {
     boost::fusion::nil args;
     return detail::invoker<
         F,
-        typename boost::mpl::next<typename boost::mpl::begin<boost::function_types::parameter_types<
+        typename boost::mpl::next<typename boost::mpl::begin<function_types::parameter_types<
             typename signature<F>::type, boost::add_pointer<boost::mpl::placeholders::_>>>::type>::
             type,
-        typename boost::mpl::end<boost::function_types::parameter_types<
+        typename boost::mpl::end<function_types::parameter_types<
             typename signature<F>::type, boost::add_pointer<boost::mpl::placeholders::_>>>::type>::
         template apply(f, astream, boost::fusion::push_back(args, that));
 }

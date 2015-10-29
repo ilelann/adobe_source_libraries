@@ -431,7 +431,7 @@ bool lex_stream_t::implementation_t::is_identifier_or_keyword(char c, stream_lex
     keyword_table_t::const_iterator iter(lower_bound(*keywords_g, ident));
 
     if ((iter != keywords_g->end() && *iter == ident) ||
-        (!keyword_proc_m.empty() && keyword_proc_m(ident))) {
+        (keyword_proc_m && keyword_proc_m(ident))) {
         result = stream_lex_token_t(keyword_k, any_regular_t(ident));
     } else {
         result = stream_lex_token_t(identifier_k, any_regular_t(ident));

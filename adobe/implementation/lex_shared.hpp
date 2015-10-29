@@ -23,7 +23,7 @@
 #include <cstdio>
 #include <iterator>
 
-#include <boost/function.hpp>
+#include <adobe/function.hpp>
 #include <boost/array.hpp>
 
 /*************************************************************************************************/
@@ -47,7 +47,7 @@ template <std::size_t S, typename E> // E models Enumeration
 struct lex_base_t {
 public:
     typedef std::istream::pos_type pos_type;
-    typedef boost::function<void()> parse_token_proc_t;
+    typedef function<void()> parse_token_proc_t;
     typedef lex_token_t<E> token_type;
 
     lex_base_t(uchar_ptr_t first, uchar_ptr_t last, const line_position_t& position);
@@ -293,7 +293,7 @@ template <std::size_t S, typename I> // I models InputIterator
 struct stream_lex_base_t {
 public:
     typedef std::istream::pos_type pos_type;
-    typedef boost::function<void(char)> parse_token_proc_t;
+    typedef function<void(char)> parse_token_proc_t;
 
     stream_lex_base_t(I first, I last, const line_position_t& position);
 

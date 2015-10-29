@@ -20,7 +20,7 @@
 
 #include <boost/any.hpp>
 #include <boost/shared_ptr.hpp>
-#include <boost/function.hpp>
+#include <adobe/function.hpp>
 
 /*************************************************************************************************/
 
@@ -159,7 +159,7 @@ intended to be displayed on multiple lines with a monospaced font.
 
 struct line_position_t {
 public:
-    typedef boost::function<std::string(name_t, std::streampos)> getline_proc_impl_t;
+    typedef function<std::string(name_t, std::streampos)> getline_proc_impl_t;
     typedef boost::shared_ptr<getline_proc_impl_t> getline_proc_t;
 
     // line_number starts at 1.

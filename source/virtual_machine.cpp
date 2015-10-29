@@ -82,8 +82,8 @@ namespace {
 using namespace adobe::literals;
 
 typedef void (adobe::virtual_machine_t::implementation_t::*operator_t)();
-typedef boost::function<adobe::any_regular_t(const adobe::array_t&)> array_function_t;
-typedef boost::function<adobe::any_regular_t(const adobe::dictionary_t&)> dictionary_function_t;
+typedef function<adobe::any_regular_t(const adobe::array_t&)> array_function_t;
+typedef function<adobe::any_regular_t(const adobe::dictionary_t&)> dictionary_function_t;
 
 typedef vector<adobe::any_regular_t> stack_type; // REVISIT (sparent) : GCC 3.1 the symbol stack_t
 // conflicts with a symbol in signal.h
