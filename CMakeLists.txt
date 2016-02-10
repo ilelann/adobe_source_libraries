@@ -10,8 +10,13 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LANGUAGE_STANDARD "c++0x")
 set(CMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LIBRARY "libc++")
 
-add_definitions ("-Wall")
-add_definitions ("-Werror")
+if (MSVC)
+    add_definitions("-DADOBE_TEST_MICROSOFT_NO_DEPRECATE=0")
+    add_definitions("-DBOOST_MP_USER_DEFINED_LITERALS=1")
+else()
+    add_definitions ("-Wall")
+    add_definitions ("-Werror")
+endif()
 
 # There are two big choices this file makes - how to include Boost, and how to
 # include double-conversion, respectively. Build environments vary and we're
@@ -115,11 +120,11 @@ else()
         boost_unit_test STATIC
         ../boost_libraries/libs/test/src/compiler_log_formatter.cpp
         ../boost_libraries/libs/test/src/debug.cpp
-        ../boost_libraries/libs/test/src/exception_safety.cpp
+        #../boost_libraries/libs/test/src/exception_safety.cpp
         ../boost_libraries/libs/test/src/execution_monitor.cpp
         ../boost_libraries/libs/test/src/framework.cpp
-        ../boost_libraries/libs/test/src/interaction_based.cpp
-        ../boost_libraries/libs/test/src/logged_expectations.cpp
+        #../boost_libraries/libs/test/src/interaction_based.cpp
+        #../boost_libraries/libs/test/src/logged_expectations.cpp
         ../boost_libraries/libs/test/src/plain_report_formatter.cpp
         ../boost_libraries/libs/test/src/progress_monitor.cpp
         ../boost_libraries/libs/test/src/results_collector.cpp
@@ -130,7 +135,7 @@ else()
         ../boost_libraries/libs/test/src/unit_test_main.cpp
         ../boost_libraries/libs/test/src/unit_test_monitor.cpp
         ../boost_libraries/libs/test/src/unit_test_parameters.cpp
-        ../boost_libraries/libs/test/src/unit_test_suite.cpp
+        #../boost_libraries/libs/test/src/unit_test_suite.cpp
         ../boost_libraries/libs/test/src/xml_log_formatter.cpp
         ../boost_libraries/libs/test/src/xml_report_formatter.cpp
     )
