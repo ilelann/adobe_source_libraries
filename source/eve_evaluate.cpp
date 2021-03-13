@@ -9,7 +9,7 @@
 
 #include <mutex>
 
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
 #include <adobe/algorithm/sort.hpp>
 #include <adobe/array.hpp>
@@ -18,11 +18,11 @@
 #include <adobe/static_table.hpp>
 #include <adobe/string.hpp>
 #include <adobe/virtual_machine.hpp>
-#include <adobe/once.hpp>
 
 /**************************************************************************************************/
 
 using namespace std;
+using namespace boost::placeholders;
 
 /**************************************************************************************************/
 

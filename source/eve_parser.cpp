@@ -10,12 +10,11 @@
 #include <string>
 
 #include <boost/array.hpp>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
 #include <adobe/algorithm/sorted.hpp>
 #include <adobe/algorithm/binary_search.hpp>
 #include <adobe/functional/operator.hpp>
-#include <adobe/any_regular.hpp>
 #include <adobe/array.hpp>
 #include <adobe/dictionary.hpp>
 #include <adobe/name.hpp>
@@ -24,6 +23,7 @@
 #include <adobe/implementation/expression_parser.hpp>
 
 using namespace std;
+using namespace boost::placeholders;
 
 /*************************************************************************************************/
 

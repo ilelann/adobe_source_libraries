@@ -14,10 +14,8 @@
 #include <mutex>
 
 #include <boost/array.hpp>
-#include <boost/bind.hpp>
 
 #include <adobe/adam_evaluate.hpp>
-#include <adobe/once.hpp>
 #include "iomanip_flat.hpp"
 #include <adobe/iomanip_asl_cel.hpp>
 #include <adobe/implementation/token.hpp>

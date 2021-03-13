@@ -7,28 +7,24 @@
 
 #include <adobe/implementation/adam_parser_impl.hpp>
 
-#include <utility>
 #include <istream>
-#include <sstream>
-#include <iomanip>
 #include <cassert>
 
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 #include <boost/array.hpp>
 
 #include <adobe/algorithm/binary_search.hpp>
-#include <adobe/algorithm/lower_bound.hpp>
 #include <adobe/algorithm/sort.hpp>
 #include <adobe/algorithm/sorted.hpp>
 
 #include <adobe/array.hpp>
 #include <adobe/name.hpp>
-#include <adobe/any_regular.hpp>
 #include <adobe/dictionary.hpp>
 
 #include <adobe/implementation/token.hpp>
 
 using namespace std;
+using namespace boost::placeholders;
 
 /*************************************************************************************************/
 

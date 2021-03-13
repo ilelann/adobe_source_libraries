@@ -5,13 +5,17 @@
 */
 /*************************************************************************************************/
 
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
 #include <adobe/adam_evaluate.hpp>
 
 #include <adobe/array.hpp>
 #include <adobe/dictionary.hpp>
 #include <adobe/name.hpp>
+
+/*************************************************************************************************/
+
+using namespace boost::placeholders;
 
 /*************************************************************************************************/
 

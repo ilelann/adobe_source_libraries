@@ -27,7 +27,7 @@
 #include <boost/function.hpp>
 #include <boost/noncopyable.hpp>
 #include <boost/operators.hpp>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 #include <boost/array.hpp>
 #include <boost/iterator/iterator_facade.hpp>
 

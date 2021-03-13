@@ -12,13 +12,12 @@
 #include <utility>
 #include <vector>
 
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 #include <boost/tuple/tuple.hpp>
 #include <boost/function.hpp>
 
 #include <adobe/algorithm/find.hpp>
 #include <adobe/algorithm/for_each.hpp>
-#include <adobe/algorithm/transform.hpp>
 #include <adobe/algorithm/unique.hpp>
 #include <adobe/algorithm/sort.hpp>
 #include <adobe/array.hpp>
@@ -40,6 +39,7 @@
 /**************************************************************************************************/
 
 using namespace std;
+using namespace boost::placeholders;
 
 /**************************************************************************************************/
 

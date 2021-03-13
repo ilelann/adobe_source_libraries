@@ -5,7 +5,7 @@
 */
 /*************************************************************************************************/
 
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
 #include <adobe/implementation/xml_lex.hpp>
 

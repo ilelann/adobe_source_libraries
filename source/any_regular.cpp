@@ -9,25 +9,13 @@
 
 #include <adobe/any_regular.hpp>
 
-#include <cassert>
 #include <string>
 
-#ifdef ADOBE_BUILT_WITH_CMAKE
-#include <double-conversion/double-conversion.h>
-#else
-#include <double-conversion/src/double-conversion.h>
-#endif
-
-#include <adobe/algorithm/sorted.hpp>
 #include <adobe/algorithm/lower_bound.hpp>
-#include <adobe/array.hpp>
 #include <adobe/dictionary.hpp>
 #include <adobe/iomanip.hpp>
 #include <adobe/name.hpp>
-#include <adobe/string.hpp>
 #include <adobe/table_index.hpp>
-
-#include <ostream>
 
 using namespace std;
 

@@ -14,8 +14,7 @@
 #include <typeinfo>
 #include <vector>
 
-#include <boost/iterator/transform_iterator.hpp>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
 #include <adobe/algorithm/minmax.hpp>
 #include <adobe/any_regular.hpp>
@@ -23,12 +22,10 @@
 #include <adobe/cmath.hpp>
 #include <adobe/dictionary.hpp>
 #include <adobe/empty.hpp>
-#include <adobe/functional.hpp>
 #include <adobe/implementation/expression_filter.hpp>
 #include <adobe/implementation/token.hpp>
 #include <adobe/localization.hpp>
 #include <adobe/name.hpp>
-#include <adobe/once.hpp>
 #include <adobe/static_table.hpp>
 #include <adobe/string.hpp>
 #include <adobe/virtual_machine.hpp>
@@ -38,6 +35,7 @@
 #endif
 
 using namespace std;
+using namespace boost::placeholders;
 
 /*************************************************************************************************/
 

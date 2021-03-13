@@ -6,11 +6,13 @@
 
 /*************************************************************************************************/
 
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
 #include "queryable_sheet.hpp"
 
 /*************************************************************************************************/
+
+using namespace boost::placeholders;
 
 namespace adobe {
 

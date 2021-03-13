@@ -11,7 +11,7 @@
 #include <iterator>
 #include <vector>
 
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
 #include <adobe/algorithm/copy.hpp>
 #include <adobe/algorithm/find.hpp>
@@ -23,6 +23,7 @@
 /**************************************************************************************************/
 
 using namespace std;
+using namespace boost::placeholders;
 
 /**************************************************************************************************/
 

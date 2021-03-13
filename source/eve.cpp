@@ -14,7 +14,7 @@
 #include <boost/iterator/transform_iterator.hpp>
 #include <boost/utility/enable_if.hpp>
 #include <boost/variant/static_visitor.hpp>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
 #include <adobe/algorithm/for_each.hpp>
 #include <adobe/algorithm/for_each_position.hpp>
@@ -31,6 +31,7 @@
 
 /*************************************************************************************************/
 
+using namespace boost::placeholders;
 
 namespace {
 

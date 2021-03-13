@@ -6,3 +6,6 @@ xcuserdata
 gh-pages/
 
 documentation/doxyfile.bak
+
+# CLion
+cmake-build-*/

@@ -8,23 +8,21 @@
 #include <adobe/implementation/lex_stream.hpp>
 
 #include <iostream>
-#include <sstream>
 #include <mutex>
 
 #include <boost/array.hpp>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
 #include <adobe/once.hpp>
-#include <adobe/string.hpp>
 #include <adobe/name.hpp>
 #include <adobe/implementation/token.hpp>
-#include <adobe/circular_queue.hpp>
 #include <adobe/implementation/lex_shared.hpp>
 #include <adobe/istream.hpp>
 
 /**************************************************************************************************/
 
 using namespace std;
+using namespace boost::placeholders;
 
 /**************************************************************************************************/
 

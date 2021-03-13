@@ -14,7 +14,7 @@
 #include <tr1/functional>
 #include <tr1/type_traits>
 
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
 #include <adobe/cstdint.hpp>
 #include <adobe/string.hpp>

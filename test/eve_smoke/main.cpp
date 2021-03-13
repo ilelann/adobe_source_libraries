@@ -6,21 +6,21 @@
 /*************************************************************************************************/
 
 #include <iostream>
-#include <sstream>
 #include <string>
 
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/fstream.hpp>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
-#include <adobe/any_regular.hpp>
-#include <adobe/array.hpp>
 #include <adobe/dictionary.hpp>
-#include <adobe/eve.hpp>
 #include <adobe/eve_evaluate.hpp>
 #include <adobe/eve_parser.hpp>
 #include <adobe/iomanip_asl_cel.hpp>
 #include <adobe/name.hpp>
+
+/*************************************************************************************************/
+
+using namespace boost::placeholders;
 
 /*************************************************************************************************/
 

@@ -16,8 +16,7 @@
 #include <adobe/name.hpp>
 #include <adobe/once.hpp>
 
-#include <boost/cstdint.hpp>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
 #include <boost/iterator/transform_iterator.hpp>
 
@@ -32,6 +31,7 @@
 /**************************************************************************************************/
 
 using namespace std;
+using namespace boost::placeholders;
 
 /**************************************************************************************************/
 
@@ -519,6 +519,8 @@ struct replacement_engine_t {
     }
 
     std::string run() {
+        using namespace boost::placeholders;
+
         implementation::context_frame_t::store_range_pair_t range(
             implementation::top_frame().range_for_key(xstring_id_m));
 #ifndef NDEBUG

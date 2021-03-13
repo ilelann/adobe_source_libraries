@@ -9,7 +9,7 @@
 
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/fstream.hpp>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
 #include <adobe/adam.hpp>
 #include <adobe/adam_evaluate.hpp>
@@ -27,6 +27,7 @@
 
 /****************************************************************************************************/
 
+using namespace boost::placeholders;
 namespace bfs = boost::filesystem;
 
 /****************************************************************************************************/

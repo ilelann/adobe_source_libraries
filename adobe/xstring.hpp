@@ -22,7 +22,7 @@
 
 #include <boost/function.hpp>
 #include <boost/noncopyable.hpp>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
 #include <sstream>
 #include <vector>
@@ -187,6 +187,8 @@ void xstring_clear_glossary();
 
 template <typename O> // O models OutputIterator
 inline void parse_xml_fragment(uchar_ptr_t fragment, std::size_t n, O output) {
+    using namespace boost::placeholders;
+
     const implementation::context_frame_t& context(implementation::top_frame());
 
     make_xml_parser(fragment, fragment + n, line_position_t("parse_xml_fragment"),

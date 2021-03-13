@@ -11,12 +11,14 @@
 #include <adobe/xml_parser.hpp>
 #include <adobe/xstring.hpp>
 
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 #include <boost/lexical_cast.hpp>
 
 #include <exception>
 #include <iostream>
 #include <vector>
+
+using namespace boost::placeholders;
 
 /****************************************************************************************************/
 

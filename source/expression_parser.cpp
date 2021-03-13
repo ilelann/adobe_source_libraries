@@ -13,20 +13,15 @@ with regards to state.
 /*************************************************************************************************/
 
 #include <cassert>
-#include <iomanip>
 #include <istream>
-#include <sstream>
 #include <utility>
 
-#include <boost/bind.hpp>
 #include <boost/array.hpp>
-#include <boost/config.hpp>
 
 #include <adobe/array.hpp>
 #include <adobe/name.hpp>
 #include <adobe/any_regular.hpp>
 #include <adobe/dictionary.hpp>
-#include <adobe/string.hpp>
 
 #include <adobe/implementation/expression_parser.hpp>
 #include <adobe/implementation/lex_stream.hpp>
